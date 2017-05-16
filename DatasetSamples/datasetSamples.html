@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+	<title>Data Samples</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="//code.jquery.com/jquery.min.js"></script>
+</head>
+
+<style>
+	panel {
+		display: block;
+	    margin-left: auto;
+	    margin-right: auto;
+	}
+	.content{
+		margin-left: 5%;
+	}
+</style>
+
+<body>
+	<div class="navigation"></div>
+	<div class="content">
+		<div class="panel panel-default" style="width:90%">
+		  <div class="panel-heading">Exemplo de dados</div>
+		  <div id="myTable" class="panel-body"></div>		  
+		</div>
+	</div>
+</body>
+
+<script>
+$.get("../index.html", function(data){
+    $(".navigation").replaceWith(data);
+});
+
+var tabulate = function (data,columns) {
+  var table = d3.select('#myTable').append('table').attr("class", "table table-striped")
+	var thead = table.append('thead')
+	var tbody = table.append('tbody')
+
+	thead.append('tr')
+	  .selectAll('th')
+	    .data(columns)
+	    .enter()
+	  .append('th')
+	    .text(function (d) { return d })
+
+	var rows = tbody.selectAll('tr')
+	    .data(data)
+	    .enter()
+	    .append('tr')
+
+	var cells = rows.selectAll('td')
+	    .data(function(row) {
+	    	return columns.map(function (column) {
+	    		if(row[column] != ''){
+	    			return { column: column, value: row[column] };
+	    		}else{
+	    			console.log("end");
+	    			return { column: column, value: "-----------------------------------" };
+	    		}
+	      })
+      })
+      .enter()
+      .append('td')
+      .text(function (d) { return d.value })
+
+  return table;
+}
+
+d3.csv("samples.csv", function(data) {
+
+	var header = ['text','id','subreddit','meta','time','author','ups','downs','authorlinkkarma','authorkarma','authorisgold'];
+	tabulate(data, header); 
+});
+</script>
