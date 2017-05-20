@@ -48,12 +48,12 @@ var tabulate = function (data, columns, table) {
   return table;
 }
 
-d3.csv('/DatasetSamples/samples.csv', function(data) {
+d3.csv('https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/DatasetSamples/samples.csv', function(data) {
 	var sampleHeader = ['text','id','subreddit','meta','time','author','ups','downs','authorlinkkarma','authorkarma','authorisgold'];
 	tabulate(data, sampleHeader, '#samplesTable'); 
 });
 
-d3.csv('/DatasetSamples/attributes.csv', function(data) {
+d3.csv('https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/DatasetSamples/attributes.csv', function(data) {
 	var attributesHeader = ['Atributo', 'Descrição'];
 	tabulate(data, attributesHeader, '#attributesTable'); 
 });
