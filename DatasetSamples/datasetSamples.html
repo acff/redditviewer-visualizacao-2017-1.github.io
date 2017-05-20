@@ -2,35 +2,19 @@
 <meta charset="utf-8">
 <head>
 	<title>Data Samples</title>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="//code.jquery.com/jquery.min.js"></script>
+    <link rel="import" href="/dependences.html">
 </head>
 
-<style>
-	panel {
-		display: block;
-	    margin-left: auto;
-	    margin-right: auto;
-	}
-	.content{
-		margin-left: 5%;
-	}
-</style>
-
 <body>
-	<div class="navigation"></div>
-	<div class="content">
-		<div class="panel panel-default" style="width:90%">
-		  <div class="panel-heading">Exemplo de dados</div>
-		  <div id="myTable" class="panel-body"></div>		  
-		</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Exemplo de dados</div>
+	  <div id="myTable" class="table-responsive"></div>	  
 	</div>
 </body>
 
 <script>
-$.get("../index.html", function(data){
-    $(".navigation").replaceWith(data);
-});
+
+var DATA_PATH = "/DatasetSamples/samples.csv";
 
 var tabulate = function (data,columns) {
   var table = d3.select('#myTable').append('table').attr("class", "table table-striped")
@@ -52,12 +36,7 @@ var tabulate = function (data,columns) {
 	var cells = rows.selectAll('td')
 	    .data(function(row) {
 	    	return columns.map(function (column) {
-	    		if(row[column] != ''){
-	    			return { column: column, value: row[column] };
-	    		}else{
-	    			console.log("end");
-	    			return { column: column, value: "-----------------------------------" };
-	    		}
+	    		return { column: column, value: row[column] };
 	      })
       })
       .enter()
@@ -67,8 +46,7 @@ var tabulate = function (data,columns) {
   return table;
 }
 
-d3.csv("samples.csv", function(data) {
-
+d3.csv(DATA_PATH, function(data) {
 	var header = ['text','id','subreddit','meta','time','author','ups','downs','authorlinkkarma','authorkarma','authorisgold'];
 	tabulate(data, header); 
 });

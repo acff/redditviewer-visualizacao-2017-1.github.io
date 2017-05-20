@@ -3,9 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Reddit Viewer</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="import" href="/dependences.html">
     </head>
     <style type="text/css">
     	body {
@@ -21,7 +19,8 @@
 			margin-bottom: 30px;
 		}
 		#content{
-			margin-left: 5%;
+			margin-left: 2%;
+			margin-right: 2%;
 		}
     </style>
     <body>
@@ -35,14 +34,32 @@
 			        <span class="icon-bar"></span>
 			        <span class="icon-bar"></span>
 			      </button>
-			      <a class="navbar-brand" href="https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/">Reddit Viewer</a>
+			      <a id="home" class="navbar-brand" href="#home">Reddit Viewer</a>
 			    </div>
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			      <ul class="nav navbar-nav">
-			        <li><a href="DatasetSamples/datasetSamples.html">Dataset Samples</a></li>
+			        <li><a id="datasetPage" href="#dataset">Dataset Samples</a></li>
+					<li><a id="presentationsPage" href="#presentations">Presentations</a></li>
 			      </ul>
 			  	</div>
 			</nav>
 		</div>
+		<div id="content"></div>
     </body>
+    <script type="text/javascript">
+	    $(document).ready(function(){
+	    	$("#home").click(function(){
+			    //$("#content").load("index.html"); TODO
+			});
+
+	    	$("#datasetPage").click(function(){
+			    $("#content").load("/DatasetSamples/datasetSamples.html");
+			});
+
+			$("#presentationsPage").click(function(){
+			    $("#content").load("/Presentations/presentations.html");
+			});
+	    });
+    	
+    </script>
 </html>
