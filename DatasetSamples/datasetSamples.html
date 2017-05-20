@@ -1,23 +1,25 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<head>
-	<title>Data Samples</title>
-    <link rel="import" href="/dependences.html">
-</head>
+<h3># Base de dados</h3>
+<p>
+	A base de dados utilizada no projeto foi obtida através do <a href="https://github.com/linanqiu/reddit-dataset">repositório.</a>
+	<ul>
+		<li>Contém cerca de  260.000 tópicos/comentários minerados do Reddit (Abril, 2016).</li>
+		<li>51 subreddits divididos em 7 metas: entertainment, gaming, humor, learning, lifestyle, news e television.</li>
+	</ul>
+</p>
 
-<body>
-	<div class="panel panel-default">
-	  <div class="panel-heading">Exemplo de dados</div>
-	  <div id="myTable" class="table-responsive"></div>	  
-	</div>
-</body>
+<h3># Entendendo os atributos</h3>
+<div class="panel panel-default">
+	<div id="attributesTable" class="table-responsive"/>	  
+</div>
+
+<h3># Exemplo de dados</h3>
+<div class="panel panel-default">
+  <div id="samplesTable" class="table-responsive"></div>	  
+</div>
 
 <script>
-
-var DATA_PATH = "/DatasetSamples/samples.csv";
-
-var tabulate = function (data,columns) {
-  var table = d3.select('#myTable').append('table').attr("class", "table table-striped")
+var tabulate = function (data, columns, table) {
+  var table = d3.select(table).append('table').attr("class", "table table-striped")
 	var thead = table.append('thead')
 	var tbody = table.append('tbody')
 
@@ -46,8 +48,13 @@ var tabulate = function (data,columns) {
   return table;
 }
 
-d3.csv(DATA_PATH, function(data) {
-	var header = ['text','id','subreddit','meta','time','author','ups','downs','authorlinkkarma','authorkarma','authorisgold'];
-	tabulate(data, header); 
+d3.csv('/DatasetSamples/samples.csv', function(data) {
+	var sampleHeader = ['text','id','subreddit','meta','time','author','ups','downs','authorlinkkarma','authorkarma','authorisgold'];
+	tabulate(data, sampleHeader, '#samplesTable'); 
+});
+
+d3.csv('/DatasetSamples/attributes.csv', function(data) {
+	var attributesHeader = ['Atributo', 'Descrição'];
+	tabulate(data, attributesHeader, '#attributesTable'); 
 });
 </script>

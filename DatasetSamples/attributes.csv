@@ -1,0 +1,12 @@
+Atributo,Descrição
+text,texto do tópico
+id,identificador do tópico
+subreddit,fórum ao qual o tópico pertence
+meta,categoria a qual o tópico pertence
+time,data da postagem
+author,nome do usuário 
+ups,votos a favor 
+downs,votos contra
+authorlinkkarma,upvote global de posts
+authorkarma,upvote global de comentários
+authorisgold,booleano indicando se o usuário é do tipo ‘gold’
