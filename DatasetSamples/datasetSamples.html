@@ -7,12 +7,13 @@
 	</ul>
 </p>
 
-<h3># Entendendo os atributos</h3>
+<h3># Descrição dos atributos</h3>
 <div class="panel panel-default">
 	<div id="attributesTable" class="table-responsive"/>	  
 </div>
 
 <h3># Exemplo de dados</h3>
+<h4>## Thread</h4>
 <div class="panel panel-default">
   <div id="samplesTable" class="table-responsive"></div>	  
 </div>
@@ -48,12 +49,12 @@ var tabulate = function (data, columns, table) {
   return table;
 }
 
-d3.csv('https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/DatasetSamples/samples.csv', function(data) {
-	var sampleHeader = ['text','id','subreddit','meta','time','author','ups','downs','authorlinkkarma','authorkarma','authorisgold'];
+d3.csv('/DatasetSamples/samples.csv', function(data) {
+	var sampleHeader = ['text', 'title', 'url', 'id', 'subreddit', 'meta', 'time', 'author', 'ups', 'downs', 'authorlinkkarma', 'authorcommentkarma', 'authorisgold'];
 	tabulate(data, sampleHeader, '#samplesTable'); 
 });
 
-d3.csv('https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/DatasetSamples/attributes.csv', function(data) {
+d3.csv('/DatasetSamples/attributes.csv', function(data) {
 	var attributesHeader = ['Atributo', 'Descrição'];
 	tabulate(data, attributesHeader, '#attributesTable'); 
 });
