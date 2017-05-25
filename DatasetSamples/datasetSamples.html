@@ -50,7 +50,7 @@ var tabulate = function (data, columns, table) {
 }
 
 d3.csv('https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/DatasetSamples/samples.csv', function(data) {
-	var sampleHeader = ['text', 'title', 'url', 'id', 'subreddit', 'meta', 'time', 'author', 'ups', 'downs', 'authorlinkkarma', 'authorcommentkarma', 'authorisgold'];
+	var sampleHeader = ['text', 'id', 'subreddit', 'meta', 'time', 'author', 'ups', 'downs', 'authorlinkkarma', 'authorkarma', 'authorisgold'];
 	tabulate(data, sampleHeader, '#samplesTable'); 
 });
 

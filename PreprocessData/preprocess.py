@@ -2,17 +2,17 @@ import csv
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-testVar = raw_input("Ask user for something.")
+csv_input =  open('../DatasetSamples/samples.csv', 'rb');
+csv_output = open('result.csv', 'wb');
 
-with open('../DatasetSamples/samples.csv', 'rb') as csvfile:
-    spamreader = csv.reader(csvfile)
-    for row in spamreader:
-        word_list = word_tokenize(row[0]);
-        filtered_words = [word for word in word_list if word not in stopwords.words('english')];
-        print row[0];
-        print ' '.join(filtered_words);
+reader = csv.reader(csv_input)
+writer = csv.writer(csv_output);
 
-with open('../PreprocessData/result.csv', 'wb') as csvfile:
-    spamwriter = csv.writer(csvfile);
-    spamwriter.writerow(['Spam'] * 5 + ['Baked Beans']);
-    spamwriter.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam']);
+for row in reader:
+	word_list = word_tokenize(row[0]);
+	filtered_words = [word for word in word_list if word not in stopwords.words('english')];
+	#Write csv file on format [meta, subrredit, filtered_text]
+	writer.writerow([str(row[2]), str(row[3]), ' '.join(filtered_words)]);
+	#print ('>>>>> ' + str(row[0]));
+	#print ' '.join(filtered_words);
+
