@@ -21,21 +21,15 @@
     }
 </style>
 <body>
-    <script src="wordCloud.js"></script>
-
-</body>
-<script>
+    <script type="text/javascript" src="wordCloud.js"></script>
+    <script>
 
     var frequency_list = [{"text":"study","size":40},{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10}];
 
-    var svg = d3.select("body").append("svg")
-            .attr("width", 500)
-            .attr("height", 500);
-
+    var svg = d3.select("body").append("g");
     var myWordCloud = new WordCloud(300, 300, frequency_list, svg);
 
-/*
-    var color = d3.scale.linear()
+    /*var color = d3.scale.linear()
             .domain([0,1,2,3,4,5,6,10,15,20,100])
             .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
 
@@ -66,6 +60,8 @@
                 .text(function(d) { return d.text; });
     }*/
 </script>
+
+</body>
 
 <div style="width: 40%;">
     <div class="legend">
