@@ -9,11 +9,10 @@ class ForceDirectedGraph {
 		this.color = d3.scaleOrdinal(d3.schemeCategory20);
 
 		this.simulation = d3.forceSimulation()
-		    .force("link", d3.forceLink().id(function(d) { return d.id; }))
+		    .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(90))
 		    .force("charge", d3.forceManyBody())
 		    .force("center", d3.forceCenter(this.width / 2, this.height / 2))
-		    .force("forceX", d3.forceX(600).strength(0.06))
-    		.force("forceY", d3.forceY(300).strength(0.06));
+		    .force("forceX", d3.forceX(600).strength(0.06));
 	}
 
 	buildFDG(){
@@ -33,9 +32,7 @@ class ForceDirectedGraph {
 			  .attr("class", "nodes")
 			  .selectAll(".nodes")
 			  .data(graph.nodes)
-			  .enter().append("circle")
-			  .attr("r", 7)
-			  .attr("fill", function(d) { return that.color(d.group); })
+			  .enter().append("g")
 			  .call(d3.drag()
 			      .on("start", function(d){
 			      		if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
@@ -52,8 +49,15 @@ class ForceDirectedGraph {
 						d.fy = null;
 			      }));
 
+			node.append("circle")
+			 .attr("r", 8)
+			 .attr("fill", function(d) { return that.color(d.group); });
+
 			node.append("title")
 			  .text(function(d) { return d.id; });
+
+			node.append("text")
+			    .text(function(d) { return d.id; });
 
 			that.simulation
 			  .nodes(graph.nodes)
@@ -69,12 +73,12 @@ class ForceDirectedGraph {
 				    .attr("x2", function(d) { return d.target.x; })
 				    .attr("y2", function(d) { return d.target.y; });
 
-				node
+				node.selectAll("circle")
 				    .attr("cx", function(d) { return d.x; })
 				    .attr("cy", function(d) { return d.y; });
 
 				d3.selectAll("text")
-					.attr("x", function(d) { return d.x; })
+					.attr("x", function(d) { return d.x + 10; })
 				    .attr("y", function(d) { return d.y; });
 			}
 		});	
