@@ -26,8 +26,15 @@
 
     var frequency_list = [{"text":"study","size":40},{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10}];
 
-    var svg = d3.select("body").append("g");
+    //var frequency_list_sec = [{"text":"test1","size":40},{"text":"test2","size":15},{"text":"test3","size":10}];
+
+    var svg = d3.select("body").append("svg")
+            .attr("width", 500)
+            .attr("height", 500)
+            .attr("class", "wordcloud");
     var myWordCloud = new WordCloud(300, 300, frequency_list, svg);
+    //var myWordCloud_sec = new WordCloud(100, 100, frequency_list_sec, svg);
+
 
     /*var color = d3.scale.linear()
             .domain([0,1,2,3,4,5,6,10,15,20,100])
@@ -62,13 +69,4 @@
 </script>
 
 </body>
-
-<div style="width: 40%;">
-    <div class="legend">
-        Commonly used words are larger and slightly faded in color.  Less common words are smaller and darker.
-    </div>
-
-</div>
-
-
 </html>

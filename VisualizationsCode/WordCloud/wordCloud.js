@@ -4,14 +4,13 @@ class WordCloud{
 		this.width = width;
 		this.frequency_list = frequency_list;
 		this.wordCloudGroup = container;
-		debugger;
 		this.colorScale = d3.scale.linear()
 			            .domain([0,1,2,3,4,5,6,10,15,20,100])
 			            .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", 
 			            	"#555", "#444", "#333", "#222"]);
 
 		d3.layout.cloud()
-    		.size([this.width, this.height])
+    		.size([this.width-50, this.height-50])
             .words(frequency_list)
             .rotate(0)
             .fontSize(function(d) { return d.size; })
@@ -21,12 +20,7 @@ class WordCloud{
     
     draw(words) {
     	var that = this;
-		d3.select("g").append("svg")
-            .attr("width", 850)
-            .attr("height", 350)
-            .attr("class", "wordcloud")
-            .append("g")
-            .attr("transform", "translate(320,200)")
+		d3.select("svg").append("g").attr("transform", "translate(50, 50)")
             .selectAll("text")
             .data(words)
             .enter().append("text")
