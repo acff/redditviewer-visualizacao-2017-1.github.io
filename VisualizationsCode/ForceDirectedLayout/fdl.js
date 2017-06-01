@@ -1,0 +1,82 @@
+class ForceDirectedGraph {
+	constructor(width, height, container){
+		this.width = width;
+		this.height = height;
+		this.container = container.append("svg")
+			.attr("width", this.width)
+			.attr("height", this.height);
+
+		this.color = d3.scaleOrdinal(d3.schemeCategory20);
+
+		this.simulation = d3.forceSimulation()
+		    .force("link", d3.forceLink().id(function(d) { return d.id; }))
+		    .force("charge", d3.forceManyBody())
+		    .force("center", d3.forceCenter(this.width / 2, this.height / 2))
+		    .force("forceX", d3.forceX(600).strength(0.06))
+    		.force("forceY", d3.forceY(300).strength(0.06));
+	}
+
+	buildFDG(){
+		var that = this;
+
+		d3.json("test.json", function(error, graph) {
+			if (error) throw error;
+
+			var link = that.container.append("g")
+			  .attr("class", "links")
+			  .selectAll("line")
+			  .data(graph.links)
+			  .enter().append("line")
+			  .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+			var node = that.container.append("g")
+			  .attr("class", "nodes")
+			  .selectAll(".nodes")
+			  .data(graph.nodes)
+			  .enter().append("circle")
+			  .attr("r", 7)
+			  .attr("fill", function(d) { return that.color(d.group); })
+			  .call(d3.drag()
+			      .on("start", function(d){
+			      		if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
+						  d.fx = d.x;
+						  d.fy = d.y;
+			      })
+			      .on("drag", function(d){
+			      	 	d.fx = d3.event.x;
+	  					d.fy = d3.event.y;
+			      })
+			      .on("end", function(d){
+						if (!d3.event.active) that.simulation.alphaTarget(0);
+						d.fx = null;
+						d.fy = null;
+			      }));
+
+			node.append("title")
+			  .text(function(d) { return d.id; });
+
+			that.simulation
+			  .nodes(graph.nodes)
+			  .on("tick", ticked);
+
+			that.simulation.force("link")
+			  .links(graph.links);
+
+			function ticked() {
+				link
+				    .attr("x1", function(d) { return d.source.x; })
+				    .attr("y1", function(d) { return d.source.y; })
+				    .attr("x2", function(d) { return d.target.x; })
+				    .attr("y2", function(d) { return d.target.y; });
+
+				node
+				    .attr("cx", function(d) { return d.x; })
+				    .attr("cy", function(d) { return d.y; });
+
+				d3.selectAll("text")
+					.attr("x", function(d) { return d.x; })
+				    .attr("y", function(d) { return d.y; });
+			}
+		});	
+	}	
+}

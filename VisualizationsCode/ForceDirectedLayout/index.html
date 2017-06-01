@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="fdl.js"></script>
+</head>
+<body>
+  <script>
+    var body = d3.select("body");
+    var fdl = new ForceDirectedGraph(700, 700, body);
+    fdl.buildFDG();
+  </script>
+</body>
