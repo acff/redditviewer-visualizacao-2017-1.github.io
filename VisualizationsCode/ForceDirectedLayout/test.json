@@ -37,14 +37,7 @@
     {"id": "doctorwho", "group": 7}
   ],
   "links": [
-    {"source": "doctorwho", "target": "startrek", "value": 1},
-    {"source": "startrek", "target": "science", "value": 8},
-    {"source": "motorcycle", "target": "drunk", "value": 10},
-    {"source": "minecraft", "target": "politics", "value": 6},
-    {"source": "movies", "target": "politics", "value": 1},
-    {"source": "doctorwho", "target": "pokemon", "value": 1},
-    {"source": "jokes", "target": "politics", "value": 1},
-    {"source": "harrypotter", "target": "doctorwho", "value": 1},
-    {"source": "science", "target": "community", "value": 2}
-  ]
+    {"source": "funny", "target": "jokes", "value": 1}, 
+    {"source": "jokes", "target": "funny", "value": 1}
+]
 }

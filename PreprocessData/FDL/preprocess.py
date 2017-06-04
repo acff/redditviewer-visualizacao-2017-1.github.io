@@ -1,4 +1,4 @@
-import csv
+import csv, json
 
 ##########################
 # Write csv file given thread/comment file
@@ -75,12 +75,26 @@ def getLinks(data):
 						links[subA][subB] += 1;
 	return links;
 
-#### Main
+def writeLinksJson(links):
 
-input_test = ['threads', 'comments'];
-output = 'output_test';
-getAuthorsByMetaAndSubreddit(input_test, output_test);
+	linkJson = [];
+	for keyA in links.keys():
+			for keyB in links.keys():
+				if (keyA != keyB):
+					link = {"source":keyA, "target":keyB, "value": links[keyA][keyB]};
+					linkJson.append(link);
+
+	with open('data.json', 'w') as f:
+		json.dump(linkJson, f)
+
+	  
+#### Main
+'''
+#input_test = ['threads', 'comments'];
+output_test = 'output_test';
+#getAuthorsByMetaAndSubreddit(input_test, output_test);
 data = getAuthorsDictionary([('humor', ['funny', 'jokes'])], output_test);
 links = getLinks(data);
-
-print (data);
+writeLinksJson(links);
+print (links);
+'''

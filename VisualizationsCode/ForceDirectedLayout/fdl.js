@@ -1,7 +1,8 @@
 class ForceDirectedGraph {
-	constructor(width, height, container){
+	constructor(width, height, container, jsonFile){
 		this.width = width;
 		this.height = height;
+		this.jsonFile = jsonFile;
 		this.container = container.append("svg")
 			.attr("width", this.width)
 			.attr("height", this.height);
@@ -11,14 +12,13 @@ class ForceDirectedGraph {
 		this.simulation = d3.forceSimulation()
 		    .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(90))
 		    .force("charge", d3.forceManyBody())
-		    .force("center", d3.forceCenter(this.width / 2, this.height / 2))
-		    .force("forceX", d3.forceX(600).strength(0.06));
+		    .force("center", d3.forceCenter(this.width / 2, this.height / 2));
 	}
 
 	buildFDG(){
 		var that = this;
 
-		d3.json("test.json", function(error, graph) {
+		d3.json(this.jsonFile, function(error, graph) {
 			if (error) throw error;
 
 			var link = that.container.append("g")
