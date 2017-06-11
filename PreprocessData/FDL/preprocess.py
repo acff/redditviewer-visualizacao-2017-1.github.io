@@ -17,14 +17,14 @@ def getAuthorsByMetaAndSubreddit (input_files, output_file):
 		csv_input =  open( f + '.csv', 'rb');
 		reader = csv.reader(csv_input);
 		
-		if f == "threads":
+		if f == "comments4000":
 			for row in reader:
 				if not str(row[5]) == "":
 					writer.writerow([f, str(row[3]), str(row[2]), str(row[5])]);
-		elif f == "comments":
+		elif f == "threads4000":
 			for row in reader:
-				if not str(row[7]) == "":
-					writer.writerow([f, str(row[5]), str(row[4]), str(row[7])]);
+				if not str(row[5]) == "":
+					writer.writerow([f, str(row[3]), str(row[2]), str(row[5])]);
 
 ##########################
 # Generate dictionary of authors by meta/subreddit
@@ -89,12 +89,19 @@ def writeLinksJson(links):
 
 	  
 #### Main
-'''
-#input_test = ['threads', 'comments'];
+tuples = [
+	('humor', ['funny', 'jokes', 'facepalm', 'imgoingtohellforthis']),
+	('learning', ['askhistorians', 'askscience', 'explainlifelikeimfive', 'science', 'space', 'todayilearned', 'youshouldknow']),
+	('lifestyle', ['drunk', 'food', 'frugal', 'guns', 'lifehacks', 'motorcycles', 'progresspics', 'sex']),
+	('news', ['conservative', 'conspiracy', 'libertarian', 'news', 'offbeat', 'politics', 'truereddit', 'worldnews']),
+	('television', ['breakingbad', 'community', 'doctorwho', 'gameofthrones', 'himym', 'mylittlepony', 'startrek', 'thewalkingdead']),
+	('entertainment', ['anime', 'comicbooks', 'harrypotter', 'movies', 'music', 'starwars']),
+	('gaming', ['dota2', 'gaming', 'leagueoflegends', 'minecraft', 'pokemon', 'skyrim', 'starcraft', 'tf2'])
+];
+input_test = ['comments4000', 'threads4000'];
 output_test = 'output_test';
-#getAuthorsByMetaAndSubreddit(input_test, output_test);
-data = getAuthorsDictionary([('humor', ['funny', 'jokes'])], output_test);
+getAuthorsByMetaAndSubreddit(input_test, output_test);
+data = getAuthorsDictionary(tuples, output_test);
 links = getLinks(data);
 writeLinksJson(links);
-print (links);
-'''
+print ("and");
