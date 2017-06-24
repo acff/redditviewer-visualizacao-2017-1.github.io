@@ -9,6 +9,14 @@ class Treemap {
 		    height: 720
 		};
 
+		// this.margin = 200;
+		// debugger;
+		// this.svgWordCloud = d3.select("#svgMainID").select(".depth").select("g").append("svg")
+		// 		    		.attr("transform", "translate("+this.margin+","+this.margin+")")
+		// 		            .attr("width",  this.defaults.width   - 2*this.margin)
+		// 		            .attr("height", this.defaults.height  - 2*this.margin)
+		// 		            .attr("class", "wordcloud");
+
 		this.createTreemap();		
 	}
 
@@ -33,6 +41,7 @@ class Treemap {
 	}
 
 	main(o, data) {
+		var _this = this;
 	    var root,
 	        opts = $.extend(true, {}, this.defaults, o),
 	        formatNumber = d3.format(opts.format),
@@ -67,6 +76,7 @@ class Treemap {
 	        .round(false);
 
 	    var svg = d3.select("#chart").append("svg")
+	    	.attr("id", "svgMainID")
 	        .attr("width", width + margin.left + margin.right)
 	        .attr("height", height + margin.bottom + margin.top)
 	        .style("margin-left", -margin.left + "px")
@@ -217,10 +227,47 @@ class Treemap {
 
 	        g.selectAll("rect")
 	            .style("fill", function(d) {
-	                return color(d.key);
+	                return d3.rgb(color(d.key));//.brighter(0.4);
 	            });
 
 	        function transition(d) {
+
+	        	if(d && d.values.length == 1){
+					var margin_x = 40;
+					var margin_y = 150;
+
+					var pad_x = 550;
+					var pad_y = 340;
+					
+					var wordCloud_w = _this.defaults.width   - margin_x;
+					var wordCloud_h = _this.defaults.height  - margin_y;
+					//d3.selectAll(".child").style("fill", "white");
+
+					// uma coisa de cada vez
+					var frequency_list = [{"text":"study","size":40},{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
+					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
+					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
+					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
+					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":150},{"text":"relation","size":5},{"text":"things","size":190},{"text":"asd","size":530},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
+					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":640},{"text":"ggg","size":90},{"text":"jujubas","size":440},{"text":"Galinaceo","size":90}
+					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"Jenipapo","size":480},{"text":"things","size":10},{"text":"4323","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
+					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":140},{"text":"relation","size":5},{"text":"things","size":140},{"text":"asd","size":130},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
+					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":120},{"text":"relation","size":5},{"text":"things","size":170},{"text":"asd","size":640},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}];
+				    var svgWordCloud = d3.select("svg").append("svg")
+				    		.attr("class", "JUJUBAS")
+						    .append("g")
+			                // without the transform, words words would get cutoff to the left and top, they would
+			                // appear outside of the SVG area
+			                .attr("transform", "translate("+pad_x+","+pad_y+")")
+				    		//.attr("transform", "translate("+ (0) +","+margin+")")
+				            .attr("width",  wordCloud_w)
+				            .attr("height", wordCloud_h);
+				            
+				    var myWordCloud = new WordCloud(wordCloud_w, wordCloud_h, frequency_list, null);
+				} else {
+					d3.select(".JUJUBAS").remove();
+				}
+
 	            if (transitioning || !d) return;
 	            transitioning = true;
 

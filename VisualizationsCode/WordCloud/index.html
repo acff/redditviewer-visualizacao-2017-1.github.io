@@ -24,15 +24,15 @@
     <script type="text/javascript" src="wordCloud.js"></script>
     <script>
 
-    var frequency_list = [{"text":"study","size":40},{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10}];
+    var frequency_list = [{"text":"study","size":40},{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}];
 
     //var frequency_list_sec = [{"text":"test1","size":40},{"text":"test2","size":15},{"text":"test3","size":10}];
 
     var svg = d3.select("body").append("svg")
-            .attr("width", 500)
-            .attr("height", 500)
+            .attr("width", 700)
+            .attr("height", 700)
             .attr("class", "wordcloud");
-    var myWordCloud = new WordCloud(300, 300, frequency_list, svg);
+    var myWordCloud = new WordCloud(500, 500, frequency_list, svg);
     //var myWordCloud_sec = new WordCloud(100, 100, frequency_list_sec, svg);
 
 
