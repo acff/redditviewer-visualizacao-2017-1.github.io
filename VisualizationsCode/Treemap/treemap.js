@@ -22,7 +22,7 @@ class Treemap {
 
 	createTreemap(){
 		var that = this;
-		d3.json("https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/Treemap/treemappreprocessado.json", function(err, res) {
+		d3.json("treemappreprocessado.json", function(err, res) {
 	        if (!err) {
 	            console.log(res);
 	            var data = d3.nest().key(function(d) {
