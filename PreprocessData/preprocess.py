@@ -1,4 +1,5 @@
 import csv
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
@@ -13,6 +14,5 @@ for row in reader:
 	filtered_words = [word for word in word_list if word not in stopwords.words('english')];
 	#Write csv file on format [meta, subrredit, filtered_text]
 	writer.writerow([str(row[2]), str(row[3]), ' '.join(filtered_words)]);
-	#print ('>>>>> ' + str(row[0]));
-	#print ' '.join(filtered_words);
+	
 
