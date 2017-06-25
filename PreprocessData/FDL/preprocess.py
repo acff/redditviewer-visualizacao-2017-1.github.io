@@ -17,9 +17,10 @@ def getAuthorsByMetaAndSubreddit (input_files, output_file):
 		csv_input =  open( f + '.csv', 'rb');
 		reader = csv.reader(csv_input);
 		
-		if f == "comments4000":
+		if f == "comments":
 			for row in reader:
 				if not str(row[5]) == "":
+					print (row[5])
 					writer.writerow([f, str(row[3]), str(row[2]), str(row[5])]);
 		elif f == "threads4000":
 			for row in reader:
@@ -43,11 +44,13 @@ def getAuthorsDictionary(tuples, file_in):
 	#csv file on formart [meta, sub, author]
 	csv_input = open(file_in +'.csv', 'rb'); 
 	reader = csv.reader(csv_input);
-
+	count = 0;
 	for row in reader:
 		meta = str(row[1]);
 		subreddit = str(row[2]);
 		author = str(row[3]);
+		count += 1;
+		print(count)
 
 		data[subreddit].append(author);
 
@@ -82,24 +85,26 @@ def writeLinksJson(links):
 			for keyB in links.keys():
 				if (keyA != keyB):
 					link = {"source":keyA, "target":keyB, "value": links[keyA][keyB]};
+					print (link)
 					linkJson.append(link);
 
-	with open('data.json', 'w') as f:
+	with open('data_finall.json', 'w') as f:
+		print('escrevendo json')
 		json.dump(linkJson, f)
 
 	  
 #### Main
 tuples = [
-	('humor', ['funny', 'jokes', 'facepalm', 'imgoingtohellforthis']),
-	('learning', ['askhistorians', 'askscience', 'explainlifelikeimfive', 'science', 'space', 'todayilearned', 'youshouldknow']),
+	('humor', ['adviceanimals', 'circlejerk', 'funny', 'jokes', 'facepalm', 'imgoingtohellforthis']),
+	('learning', ['askhistorians', 'askscience', 'explainlikeimfive', 'science', 'space', 'todayilearned', 'youshouldknow']),
 	('lifestyle', ['drunk', 'food', 'frugal', 'guns', 'lifehacks', 'motorcycles', 'progresspics', 'sex']),
 	('news', ['conservative', 'conspiracy', 'libertarian', 'news', 'offbeat', 'politics', 'truereddit', 'worldnews']),
 	('television', ['breakingbad', 'community', 'doctorwho', 'gameofthrones', 'himym', 'mylittlepony', 'startrek', 'thewalkingdead']),
 	('entertainment', ['anime', 'comicbooks', 'harrypotter', 'movies', 'music', 'starwars']),
 	('gaming', ['dota2', 'gaming', 'leagueoflegends', 'minecraft', 'pokemon', 'skyrim', 'starcraft', 'tf2'])
 ];
-input_test = ['comments4000', 'threads4000'];
-output_test = 'output_test';
+input_test = ['comments'];
+output_test = 'output_test_FINAL';
 getAuthorsByMetaAndSubreddit(input_test, output_test);
 data = getAuthorsDictionary(tuples, output_test);
 links = getLinks(data);

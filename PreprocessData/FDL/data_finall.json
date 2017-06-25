@@ -1,60 +1,4 @@
-{
-  "nodes": [
-    {"id": "anime", "group": "entertainment"},
-    {"id": "comicbooks", "group": "entertainment"},
-    {"id": "movies", "group": "entertainment"},
-    {"id": "music", "group": "entertainment"},
-    {"id": "harrypotter", "group": "entertainment"},
-    {"id": "starwars", "group": "entertainment"},
-    {"id": "dota2", "group": "gaming"},
-    {"id": "gaming", "group": "gaming"},
-    {"id": "leagueoflegends", "group": "gaming"},
-    {"id": "minecraft", "group": "gaming"},
-    {"id": "pokemon", "group": "gaming"},
-    {"id": "skyrim", "group": "gaming"},
-    {"id": "starcraft", "group": "gaming"},
-    {"id": "tf2", "group": "gaming"},
-    {"id": "adviceanimals", "group": "humor"},
-    {"id": "funny", "group": "humor"},
-    {"id": "circlejerk", "group": "humor"},
-    {"id": "jokes", "group": "humor"},
-    {"id": "facepalm", "group": "humor"},
-    {"id": "imgoingtohellforthis", "group": "humor"},
-    {"id": "drunk", "group": "lifestyle"},
-    {"id": "food", "group": "lifestyle"},
-    {"id": "frugal", "group": "lifestyle"},
-    {"id": "lifehacks", "group": "lifestyle"},
-    {"id": "guns", "group": "lifestyle"},
-    {"id": "sex", "group": "lifestyle"},
-    {"id": "motorcycles", "group": "lifestyle"},
-    {"id": "progressspic", "group": "lifestyle"},
-    {"id": "askhistorians", "group": "learning"},
-    {"id": "science", "group": "learning"},
-    {"id": "askscience", "group": "learning"},
-    {"id": "space", "group": "learning"},
-    {"id": "youshouldknow", "group": "learning"},
-    {"id": "explainlikeimfive", "group": "learning"},
-    {"id": "space", "group": "learning"},
-    {"id": "todayilearned", "group": "learning"},
-    {"id": "conspiracy", "group": "news"},
-    {"id": "politics", "group": "news"},
-    {"id": "conservative", "group": "news"},
-    {"id": "libertarian", "group": "news"},
-    {"id": "community", "group": "television"},
-    {"id": "gameofthrones", "group": "television"},
-    {"id": "startrek", "group": "television"},
-    {"id": "doctorwho", "group": "television"},
-    {"id": "truereddit", "group": "television"},
-    {"id": "himym", "group": "television"},
-    {"id": "news", "group": "television"},
-    {"id": "breakingbad", "group": "television"},
-    {"id": "worldnews", "group": "television"},
-    {"id": "mylittlepony", "group": "television"},
-    {"id": "progresspics", "group": "television"},
-    {"id": "thewalkingdead", "group": "television"},
-    {"id": "offbeat", "group": "television"}
-  ],
-  "links": [
+[
    {
       "source":"himym",
       "target":"truereddit",
@@ -12805,5 +12749,4 @@
       "target":"minecraft",
       "value":1
    }
-]  
-}
+]
