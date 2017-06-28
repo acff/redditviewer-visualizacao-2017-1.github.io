@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>    
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="histogram.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <script type="text/javascript">
+        var xScale = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        var xScale2 = Array.apply(null, {length: 24}).map(Number.call, Number);
+        var container = d3.select("body").append("div").attr("id", "diagram");
+
+        var hist = new Histogram(container, xScale, "resultByDay.csv", "anime");
+        hist.buildHistogram();
+
+        var hist2 = new Histogram(container, xScale2, "resultByHour.csv", "anime");
+        hist2.buildHistogram();
+    </script>
+</body>
+</html>
