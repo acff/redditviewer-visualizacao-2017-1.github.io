@@ -11,10 +11,10 @@
         var xScale2 = Array.apply(null, {length: 24}).map(Number.call, Number);
         var container = d3.select("body").append("div").attr("id", "diagram");
 
-        var hist = new Histogram(container, xScale, "resultByDay.csv", "anime");
+        var hist = new Histogram(container, xScale, "resultByDay.csv", "comicbooks");
         hist.buildHistogram();
 
-        var hist2 = new Histogram(container, xScale2, "resultByHour.csv", "anime");
+        var hist2 = new Histogram(container, xScale2, "resultByHour.csv", "comicbooks");
         hist2.buildHistogram();
     </script>
 </body>
