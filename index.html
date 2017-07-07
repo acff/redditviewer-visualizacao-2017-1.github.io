@@ -1,69 +1,185 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Reddit Viewer</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script src="https://d3js.org/d3.v4.min.js"></script>
-    </head>
-    <style type="text/css">
-    	body {
-		  padding-top: 50px;
-		}
+	<head>
+		<title>Reddit Viewer</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
 
-		.container {
-			padding-top: 50px;
-			width: 50%;
-		}
+		<!-- Wrapper -->
+			<div id="wrapper">
 
-		#navbar{
-			margin-bottom: 30px;
-		}
-		#content{
-			margin-left: 2%;
-			margin-right: 2%;
-		}
-    </style>
-    <body>
-    	<div id="navbar">
-	   		<nav class="navbar navbar-inverse navbar-fixed-top">
-			  <div class="container-fluid">
-			    <div class="navbar-header">
-			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-			        <span class="sr-only">Toggle navigation</span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			      </button>
-			      <a id="home" class="navbar-brand" href="#home">Reddit Viewer</a>
-			    </div>
-			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			      <ul class="nav navbar-nav">
-			        <li><a id="datasetPage" href="#dataset">Dataset Samples</a></li>
-					<li><a id="presentationsPage" href="#presentations">Presentations/Status</a></li>
-			      </ul>
-			  	</div>
-			</nav>
-		</div>
-		<div id="content"></div>
-    </body>
-    <script type="text/javascript">
-	    $(document).ready(function(){
-	    	$("#content").load("https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/home.html"); 
-	    	$("#home").click(function(){
-			    $("#content").load("https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/home.html"); 
-			});
+				<!-- Header -->
+					<header id="header" class="alt">
+						<span class="logo"><img src="images/reddit_logo.png"  style="height:100px;width:100px;" alt="" /></span>
+						<h1>Reddit Viewer</h1>
+						<p>Um olhar sobre a comunidade do Reddit<br/>
+						<!--built by <a href="https://twitter.com/ajlkn">@ajlkn</a> for <a href="https://html5up.net">HTML5 UP</a>.--></p>
+					</header>
 
-	    	$("#datasetPage").click(function(){
-			    $("#content").load("https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/DatasetSamples/datasetSamples.html");
-			});
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li><a href="#intro" class="active">Introdução</a></li>
+							<li><a href="#first">Base de dados</a></li>
+							<li><a href="#second">Proposta</a></li>
+						</ul>
+					</nav>
 
-			$("#presentationsPage").click(function(){
-			    $("#content").load("https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/Presentations/presentations.html");
-			});
-	    });
-    	
-    </script>
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Introduction -->
+							<section id="intro" class="main">
+								<div class="spotlight">
+									<div class="content">
+										<header class="major">
+											<h2>Reddit</h2>
+										</header>
+										<p>O Reddit, o maior e mais importante fórum de discussões da internet,
+										 construiu uma reputação única desde seu surgimento, em 2005. 
+										O Reddit não se autodenomina “a capa da internet” à toa, 
+										as informações mais recentes sobre audiência divulgadas pelo site revelam 234 milhões 
+										de visitantes únicos e 8 bilhões de impressões de páginas só no mês de dezembro de 2015. 
+										</p>
+										<ul class="actions">
+											<li><a href="www.reddit.com" class="button">Ir para Reddit</a></li>
+										</ul>
+									</div>
+									<!--<span class="image"><img src="images/pic01.jpg" alt="" /></span>-->
+								</div>
+							</section>
+
+						<!-- First Section -->
+							<section id="first" class="main special">
+								<header class="major">
+									<h2>Base de dados</h2>
+								</header>
+								<ul class="content">
+									<p>A base de dados utilizada no projeto foi obtida através do repositório <a href="https://github.com/linanqiu/reddit-dataset">reddit-dataset.</a>
+									
+										<p>Contém cerca de  260.000 tópicos/comentários minerados do Reddit (Abril, 2016).</p>
+										<p>51 subreddits divididos em 7 metas: entertainment, gaming, humor, learning, lifestyle, news e television.</p>
+									</p>
+									<!--<li>
+										<span class="icon major style1 fa-code"></span>
+										<h3>Ipsum consequat</h3>
+										<p>Sed lorem amet ipsum dolor et amet nullam consequat a feugiat consequat tempus veroeros sed consequat.</p>
+									</li>
+									<li>
+										<span class="icon major style3 fa-copy"></span>
+										<h3>Amed sed feugiat</h3>
+										<p>Sed lorem amet ipsum dolor et amet nullam consequat a feugiat consequat tempus veroeros sed consequat.</p>
+									</li>
+									<li>
+										<span class="icon major style5 fa-diamond"></span>
+										<h3>Dolor nullam</h3>
+										<p>Sed lorem amet ipsum dolor et amet nullam consequat a feugiat consequat tempus veroeros sed consequat.</p>
+									</li>-->
+									<ul class="actions">
+										<li><a href="" class="button">Ver mais detalhes</a></li>
+									</ul>
+								</ul>
+							</section>
+
+						<!-- Second Section -->
+							<section id="second" class="main special">
+								<header class="major">
+									<h2>Proposta</h2>
+									<p>Nosso objetivo com esse projeto é o de interpretar os dados, assim como descobrir o comportamento das comunidades presentes no Reddit, 
+										através de nossas visualizações e dados minerados.</p>
+								</header>
+								<!--<ul class="statistics">
+									<li class="style1">
+										<span class="icon fa-code-fork"></span>
+										<strong>5,120</strong> Etiam
+									</li>
+									<li class="style2">
+										<span class="icon fa-folder-open-o"></span>
+										<strong>8,192</strong> Magna
+									</li>
+									<li class="style3">
+										<span class="icon fa-signal"></span>
+										<strong>2,048</strong> Tempus
+									</li>
+									<li class="style4">
+										<span class="icon fa-laptop"></span>
+										<strong>4,096</strong> Aliquam
+									</li>
+									<li class="style5">
+										<span class="icon fa-diamond"></span>
+										<strong>1,024</strong> Nullam
+									</li>
+								</ul>
+								<p class="content">Nam elementum nisl et mi a commodo porttitor. Morbi sit amet nisl eu arcu faucibus hendrerit vel a risus. Nam a orci mi, elementum ac arcu sit amet, fermentum pellentesque et purus. Integer maximus varius lorem, sed convallis diam accumsan sed. Etiam porttitor placerat sapien, sed eleifend a enim pulvinar faucibus semper quis ut arcu. Ut non nisl a mollis est efficitur vestibulum. Integer eget purus nec nulla mattis et accumsan ut magna libero. Morbi auctor iaculis porttitor. Sed ut magna ac risus et hendrerit scelerisque. Praesent eleifend lacus in lectus aliquam porta. Cras eu ornare dui curabitur lacinia.</p>
+								<footer class="major">-->
+									<ul class="actions">
+										<li><a href="https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/old_index.html" class="button">Ir para Reddit Viewer</a></li>
+									</ul>
+								</footer>
+							</section>
+
+						<!-- Get Started 
+							<section id="cta" class="main special">
+								<header class="major">
+									<h2>Congue imperdiet</h2>
+									<p>Donec imperdiet consequat consequat. Suspendisse feugiat congue<br />
+									posuere. Nulla massa urna, fermentum eget quam aliquet.</p>
+								</header>
+								<footer class="major">
+									<ul class="actions">
+										<li><a href="generic.html" class="button special">Get Started</a></li>
+										<li><a href="generic.html" class="button">Learn More</a></li>
+									</ul>
+								</footer>
+							</section>-->
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<h2>UFPE -  Visualização de dados 2017.1</h2>
+							<p>Projeto desenvolvido na disciplina IF762 (Visualização de Dados) ministrada pelo professor Nivan Ferreira da Universidade Federal de Pernambuco (UFPE). </p>
+							<ul class="actions">
+								<li><a href="generic.html" class="button">Ir para site da disciplina</a></li>
+							</ul>
+						</section>
+						<section>
+							<h2>Equipe</h2>
+							
+							<ul class="icons" style="display: inline;">
+								<li>
+									<dt><a href="#" class="icon fa-github alt"><span class="label">GitHub</span></a> Ana França</dt>
+									<dt><a href="#" class="icon fa-github alt"><span class="label">GitHub</span></a> Edipo Andersen</dt>
+									<dt><a href="#" class="icon fa-github alt"><span class="label">GitHub</span></a> Rodrigo Farias</dt>
+									
+								</li>	
+							</ul>
+						</section>
+						<p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
 </html>

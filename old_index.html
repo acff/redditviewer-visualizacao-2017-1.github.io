@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Reddit Viewer</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+    <style type="text/css">
+    	body {
+		  padding-top: 50px;
+		}
+
+		.container {
+			padding-top: 50px;
+			width: 50%;
+		}
+
+		#navbar{
+			margin-bottom: 30px;
+		}
+		#content{
+			margin-left: 2%;
+			margin-right: 2%;
+		}
+    </style>
+    <body>
+    	<div id="navbar">
+	   		<nav class="navbar navbar-inverse navbar-fixed-top">
+			  <div class="container-fluid">
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a id="home" class="navbar-brand" href="#home">Reddit Viewer</a>
+			    </div>
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			      <ul class="nav navbar-nav">
+			        <li><a id="datasetPage" href="#dataset">Dataset Samples</a></li>
+					<li><a id="presentationsPage" href="#presentations">Presentations/Status</a></li>
+			      </ul>
+			  	</div>
+			</nav>
+		</div>
+		<div id="content"></div>
+    </body>
+    <script type="text/javascript">
+	    $(document).ready(function(){
+	    	$("#content").load("home.html"); 
+	    	$("#home").click(function(){
+			    $("#content").load("https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/home.html"); 
+			});
+
+	    	$("#datasetPage").click(function(){
+			    $("#content").load("https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/DatasetSamples/datasetSamples.html");
+			});
+
+			$("#presentationsPage").click(function(){
+			    $("#content").load("https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/Presentations/presentations.html");
+			});
+	    });
+    	
+    </script>
+</html>
