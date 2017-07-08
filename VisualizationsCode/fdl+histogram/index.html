@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <link rel="stylesheet" type="text/css" href="../ForceDirectedLayout/style.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="../ForceDirectedLayout/fdl.js"></script>
+    <script src="../Histogram/histogram.js"></script>
+    <link rel="stylesheet" type="text/css" href="../Histogram/style.css">
+</head>
+<body>
+  <script>
+    var body = d3.select("body").append("div").attr("id", "fdl");
+ 	var fdl = new ForceDirectedGraph(900, 700, body, "../ForceDirectedLayout/test.json");    
+ 	fdl.buildFDG();
+
+	var xScale = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var xScale2 = Array.apply(null, {length: 24}).map(Number.call, Number);
+    var container = d3.select("body").append("div").attr("id", "diagram");
+
+    var hist = new Histogram(container, xScale, "../Histogram/resultByDay.csv", "comicbooks", "h1");
+    hist.buildHistogram();
+
+    //var hist2 = new Histogram(container, xScale2, "../Histogram/resultByHour.csv", "comicbooks");
+    //hist2.buildHistogram();
+  </script>
+</body>
