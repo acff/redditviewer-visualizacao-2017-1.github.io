@@ -9,6 +9,13 @@
   <script>
     var body = d3.select("body");
  	var fdl = new ForceDirectedGraph(900, 700, body, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");    
- 	fdl.buildFDG();
+	//var fdl = new ForceDirectedGraph(900, 700, body, "http://localhost:8080/ForceDirectedLayout/test.json");
+ 	fdl.buildFDG(0, 100);
   </script>
+  <form>
+    <h3> Bottom threshold  0% <input type="range" id="minThersholdSlider" name="pointsMin" value = 0 min="0" max="100" onchange="fdl.minThreshold(this.value)"> 100% </h3>
+  </form>
+  <form>
+    <h3> Upper threshold  0% <input type="range" id="maxThersholdSlider" name="pointsMax" value = 100 min="0" max="100" onchange="fdl.maxThreshold(this.value)"> 100% </h3>
+  </form>
 </body>

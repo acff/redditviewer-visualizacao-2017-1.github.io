@@ -10,12 +10,16 @@ class ForceDirectedGraph {
 		this.color = d3.scaleOrdinal(d3.schemeCategory20);
 
 		this.simulation = d3.forceSimulation()
-		    .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(350))
+		    .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(this.width / 4).strength(.1))
 		    .force("charge", d3.forceManyBody())
 		    .force("center", d3.forceCenter(this.width / 2, this.height / 2));
+		
+		this.minThresh = 0;
+		this.maxThresh = 100;
+	
 	}
 
-	buildFDG(){
+	buildFDG(minThreshold, maxThreshold){
 		var that = this;
 
 		d3.json(this.jsonFile, function(error, graph) {
@@ -25,6 +29,7 @@ class ForceDirectedGraph {
 
 			var linkedByIndex = {};
 
+			
 			for (var i = 0; i < graph.nodes.length; i++) {
 				var id = graph.nodes[i].id;
 			    linkedByIndex[ id+ "," + id] = 1;
@@ -32,46 +37,58 @@ class ForceDirectedGraph {
 			graph.links.forEach(function (d) {
 			    linkedByIndex[d.source + "," + d.target] = d.value;
 			});
+			
+			var min_link_value = Math.min.apply(Math,graph.links.map(function(d){return d.value;}));
+			var max_link_value = Math.max.apply(Math,graph.links.map(function(d){return d.value;}));
 
+			var thresholded_links = graph.links.filter(function (d) {
+				var normalized_value = (d.value - min_link_value) / max_link_value;
+				return normalized_value >= minThreshold && normalized_value <= maxThreshold;
+			});
+			
+			//debugger;			
 			var link = that.container.append("g")
 			  .attr("class", "links")
 			  .selectAll("line")
-			  .data(graph.links)
+			  //.data(graph.links)
+			  .data(thresholded_links)
 			  .enter().append("line")
 			  .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
-
+			
 			var node = that.container.append("g")
-			  .attr("class", "nodes")
-			  .selectAll(".nodes")
-			  .data(graph.nodes)
-			  .enter().append("g").attr("class", "node")
-			  .call(d3.drag()
-			      .on("start", function(d){
-			      		if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
-						  d.fx = d.x;
-						  d.fy = d.y;
-			      })
-			      .on("drag", function(d){
-			      	 	d.fx = d3.event.x;
-	  					d.fy = d3.event.y;
-			      })
-			      .on("end", function(d){
-						if (!d3.event.active) that.simulation.alphaTarget(0);
-						d.fx = null;
-						d.fy = null;
-			      }))
-			  .on("dblclick", connectedNodes); 
+				  .attr("class", "nodes")
+				  .selectAll(".nodes")
+				  .data(graph.nodes)
+				  .enter().append("g").attr("class", "node")
+				  .call(d3.drag()
+					  .on("start", function(d){
+							if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
+							  d.fx = d.x;
+							  d.fy = d.y;
+					  })
+					  .on("drag", function(d){
+							d.fx = d3.event.x;
+							d.fy = d3.event.y;
+					  })
+					  .on("end", function(d){
+							if (!d3.event.active) that.simulation.alphaTarget(0);
+							d.fx = null;
+							d.fy = null;
+					  }))
+				  .on("dblclick", connectedNodes); 
 
-			node.append("circle")
-			 .attr("r", 8)
-			 .attr("fill", function(d) { return that.color(d.group); });
+				node.append("circle")
+				 .attr("r", 8)
+				 .attr("fill", function(d) { return that.color(d.group); });
 
-			node.append("title")
-			  .text(function(d) { return d.group; });
+				node.append("title")
+				  .text(function(d) { return d.group; });
 
-			node.append("text")
-			    .text(function(d) { return d.id; });
+				node.append("text")
+					.text(function(d) { return d.id; });
 
+				that.nodes = node;	
+			
 			that.simulation
 			  .nodes(graph.nodes)
 			  .on("tick", ticked);
@@ -79,6 +96,7 @@ class ForceDirectedGraph {
 			that.simulation.force("link")
 			  .links(graph.links);
 
+			  
 			function ticked() {
 				link
 				    .attr("x1", function(d) { return d.source.x; })
@@ -118,6 +136,32 @@ class ForceDirectedGraph {
 			        toggle = 0;
 			    }
 			}
+			
 		});	
-	}	
+	}
+
+			
+	//---Insert-------
+
+	//adjust threshold
+	minThreshold(thresh) {
+		var that = this;
+		that.minThresh = thresh;
+		//debugger
+		d3.selectAll(".nodes").remove();
+		d3.selectAll(".links").remove();
+		that.buildFDG(that.minThresh/100.0, that.maxThresh/100.0);
+		that.simulation.restart();		
+	}
+	
+	maxThreshold(thresh) {
+		var that = this;
+		that.maxThresh = thresh;
+		//debugger
+		d3.selectAll(".nodes").remove();
+		d3.selectAll(".links").remove();
+		that.buildFDG(that.minThresh/100.0, that.maxThresh/100.0);
+		that.simulation.restart();		
+	}
+
 }
