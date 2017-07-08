@@ -7,15 +7,27 @@
 </head>
 <body>
     <script type="text/javascript">
+
+        var options = ['adviceanimals', 'circlejerk', 'funny', 'jokes', 'facepalm', 'imgoingtohellforthis', 'askhistorians', 'askscience', 'explainlikeimfive', 'science', 'space', 'todayilearned', 'youshouldknow', 'drunk', 'food', 'frugal', 'guns', 'lifehacks', 'motorcycles', 'progresspics', 'sex', 'conservative', 'conspiracy', 'libertarian', 'news', 'offbeat', 'politics', 'truereddit', 'worldnews', 'conservative', 'conspiracy', 'libertarian', 'news', 'offbeat', 'politics', 'truereddit', 'worldnews', 'conservative', 'conspiracy', 'libertarian', 'news', 'offbeat', 'politics', 'truereddit', 'worldnews', 'breakingbad', 'community', 'doctorwho', 'gameofthrones', 'himym', 'mylittlepony', 'startrek', 'thewalkingdead',  'anime', 'comicbooks', 'harrypotter', 'movies', 'music', 'starwars', 'dota2', 'gaming', 'leagueoflegends', 'minecraft', 'pokemon', 'skyrim', 'starcraft', 'tf2'];    
         var xScale = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         var xScale2 = Array.apply(null, {length: 24}).map(Number.call, Number);
         var container = d3.select("body").append("div").attr("id", "diagram");
 
-        var hist = new Histogram(container, xScale, "resultByDay.csv", "comicbooks");
+        var hist = new Histogram(container, xScale, "resultByDay.csv", "sex", "h1");
         hist.buildHistogram();
 
-        var hist2 = new Histogram(container, xScale2, "resultByHour.csv", "comicbooks");
+        var hist2 = new Histogram(container, xScale2, "resultByHour.csv", "sex", "h2");
         hist2.buildHistogram();
+
+        d3.select("body")
+        .append("select")
+        .on('change',function(){hist2.updateHistogram(this.value);hist.updateHistogram(this.value);})
+        .selectAll("option")
+          .data(options)
+          .enter()
+          .append("option")
+          .text(String);
+  
     </script>
 </body>
 </html>

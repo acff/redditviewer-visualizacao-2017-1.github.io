@@ -1,5 +1,5 @@
 class Histogram {
-	constructor(container, xInfo, file, subreddit) {
+	constructor(container, xInfo, file, subreddit, id) {
 		this.margin =  {top: 20, right: 40, bottom: 20, left: 40};
         this.width = 600 - this.margin.left - this.margin.right;
         this.height = 300 - this.margin.top - this.margin.bottom ;
@@ -21,6 +21,8 @@ class Histogram {
 
         this.csv = file;
         this.subreddit = subreddit;
+        this.data = [];
+        this.idd = id;
 	}
 
 	buildHistogram(){
@@ -29,19 +31,21 @@ class Histogram {
 
 			var result = that.getData(that.subreddit, data);
 
+			that.data = data;
+
 			that.yscale.domain([0, d3.max(result, function (d) { return d.value; })])
                 .range([that.height, 0]);
 
 	        that.diagram.append("g")
-                .attr("class", "x axis")
+                .attr("class", "xAxis"+that.idd)
                 .attr("transform", "translate(0, " + that.height + ")")
                 .call(that.xAxis);
 
 	        that.diagram.append("g")
-	                .attr("class", "y axis")
+	                .attr("class", "yAxis"+that.idd)
 	                .call(that.yAxis);
 
-	        var bars = that.diagram.append("g");
+	        var bars = that.diagram.append("g").attr('class', that.idd);
 
 	        bars.selectAll("rect")
 	            .data(result, function (d) {return d.label; })
@@ -55,7 +59,32 @@ class Histogram {
 	}
 
 	updateHistogram(subreddit) {
-	
+		var that = this;
+		var idReal ='.'+this.idd;
+		var result = this.getData(subreddit, this.data);
+	    var bars = d3.select(idReal).selectAll('rect').data(result);
+	    /*
+	    console.log(this.idd + "  --------------------------------------------------------");
+		result.forEach(function(d){
+			console.log(d);
+		});*/
+
+		//Update scale
+		this.yscale.domain([0, d3.max(result, function (d) { return d.value; })])
+                .range([this.height, 0]);
+	    d3.select(".yAxis" + this.idd).call(d3.axisLeft(this.yscale));
+
+	    //Update bars
+	    bars.remove();
+        d3.select(idReal).selectAll("rect")
+            .data(result, function (d) {return d.label; })
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function (d) { return that.xscale(d.label); })
+            .attr("y", function (d) { return that.yscale(d.value); })
+            .attr("width", that.xscale.bandwidth())
+            .transition().duration(750)
+            .attr("height", function (d) { return that.height - that.yscale(d.value); });   
 	}
 
 	getData(subreddit, data){
