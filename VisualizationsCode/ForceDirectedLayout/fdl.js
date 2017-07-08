@@ -19,10 +19,10 @@ class ForceDirectedGraph {
 		    .force("link", d3.forceLink()
 					.id(function(d) { return d.id; })
 					//.strength(d3.forceManyBody())
-					.strength(0.5)
+					.strength(0.8)
 					
 								
-					.distance(120)
+					.distance(100)
 				   )
 			//.force("gravity", 0.05)
 		    .force("charge", d3.forceManyBody()
