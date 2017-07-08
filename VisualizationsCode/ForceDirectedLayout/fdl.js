@@ -8,11 +8,31 @@ class ForceDirectedGraph {
 			.attr("height", this.height);
 
 		this.color = d3.scaleOrdinal(d3.schemeCategory20);
+		this.color_edges = d3.scaleLinear();
 
+     	// .gravity(0.05)
+		// .distance(100)
+		// .charge(-100)
+		// .size([width, height]);
+		
 		this.simulation = d3.forceSimulation()
-		    .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(this.width / 4).strength(.1))
-		    .force("charge", d3.forceManyBody())
-		    .force("center", d3.forceCenter(this.width / 2, this.height / 2));
+		    .force("link", d3.forceLink()
+					.id(function(d) { return d.id; })
+					//.strength(d3.forceManyBody())
+					.strength(0.5)
+					
+								
+					.distance(120)
+				   )
+			//.force("gravity", 0.05)
+		    .force("charge", d3.forceManyBody()
+								.strength(-3000)
+								//.distanceMin(100)
+								//.distanceMax(1000)
+								)
+		    .force("center", d3.forceCenter(this.width / 2, this.height / 2))
+			.force("x", d3.forceX())
+			.force("y", d3.forceY());
 		
 		this.minThresh = 0;
 		this.maxThresh = 100;
@@ -49,15 +69,26 @@ class ForceDirectedGraph {
 			//debugger;			
 			var link = that.container.append("g")
 			  .attr("class", "links")
-			  .selectAll("line")
+			  .selectAll(".line")
 			  //.data(graph.links)
 			  .data(thresholded_links)
 			  .enter().append("line")
-			  .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+			  .attr('stroke', function(d) {
+								var normalized_value = (d.value - min_link_value) / max_link_value; 
+								var color_intensity = 200 - normalized_value*255;
+								return d3.rgb(color_intensity, color_intensity, color_intensity); 
+							  })
+			  .attr("stroke-width", function(d) {
+										var normalized_value = (d.value - min_link_value) / max_link_value; 
+										var maximum_width = 10;
+										var size = 1+ normalized_value*maximum_width;
+										return size; 
+										})
+			  .attr("stroke-opacity", function(d) { return ((d.value - min_link_value) / max_link_value);});
 			
 			var node = that.container.append("g")
 				  .attr("class", "nodes")
-				  .selectAll(".nodes")
+				  .selectAll(".node")
 				  .data(graph.nodes)
 				  .enter().append("g").attr("class", "node")
 				  .call(d3.drag()
@@ -95,7 +126,25 @@ class ForceDirectedGraph {
 
 			that.simulation.force("link")
 			  .links(graph.links);
+				
+			// that.simulation.force("link", d3.forceLink()
+					// .id(function(d) { return d.id; })
+					// .strength(function(d) { 
+							// var normalized_value = (d.value - min_link_value) / max_link_value; 
+							// var value = normalized_value*1000;
+							// return -value;
+						// }))
+			  
+			function dragstarted(d) {
+			  if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
+			  d.fx = d.x;
+			  d.fy = d.y;
+			}
 
+			function dragged(d) {
+			  d.fx = d3.event.x;
+			  d.fy = d3.event.y;
+			}
 			  
 			function ticked() {
 				link
@@ -139,8 +188,7 @@ class ForceDirectedGraph {
 			
 		});	
 	}
-
-			
+	
 	//---Insert-------
 
 	//adjust threshold
@@ -151,7 +199,10 @@ class ForceDirectedGraph {
 		d3.selectAll(".nodes").remove();
 		d3.selectAll(".links").remove();
 		that.buildFDG(that.minThresh/100.0, that.maxThresh/100.0);
+		//that.simulation.stop();
 		that.simulation.restart();		
+		that.simulation.on();
+		// that.simulation.tick();
 	}
 	
 	maxThreshold(thresh) {
@@ -161,7 +212,8 @@ class ForceDirectedGraph {
 		d3.selectAll(".nodes").remove();
 		d3.selectAll(".links").remove();
 		that.buildFDG(that.minThresh/100.0, that.maxThresh/100.0);
-		that.simulation.restart();		
+		that.simulation.restart();	
+		that.simulation.on();		
 	}
 
 }
