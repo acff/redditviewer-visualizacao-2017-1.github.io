@@ -9,18 +9,18 @@
 </head>
 <body>
   <script>
-    var body = d3.select("body").append("div").attr("id", "fdl");
- 	var fdl = new ForceDirectedGraph(900, 700, body, "../ForceDirectedLayout/test.json");    
+    var body = d3.select("body").append("div").attr("id", "fdl").style("float", "left");
+ 	var fdl = new ForceDirectedGraph(700, 700, body, "../ForceDirectedLayout/test.json");    
  	fdl.buildFDG();
 
 	var xScale = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     var xScale2 = Array.apply(null, {length: 24}).map(Number.call, Number);
-    var container = d3.select("body").append("div").attr("id", "diagram");
+    var container = d3.select("body").append("div").attr("id", "diagram").style("width", "400px").style("position", "absolute").style("margin-left", "60%");
 
     var hist = new Histogram(container, xScale, "../Histogram/resultByDay.csv", "comicbooks", "h1");
     hist.buildHistogram();
 
-    //var hist2 = new Histogram(container, xScale2, "../Histogram/resultByHour.csv", "comicbooks");
-    //hist2.buildHistogram();
+    var hist2 = new Histogram(container, xScale2, "../Histogram/resultByHour.csv", "comicbooks");
+    hist2.buildHistogram();
   </script>
 </body>
