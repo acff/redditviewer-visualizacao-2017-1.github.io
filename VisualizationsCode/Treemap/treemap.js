@@ -8,7 +8,7 @@ class Treemap {
 		    width: 1500,
 		    height: 720
 		};
-
+		
 		// this.margin = 200;
 		// debugger;
 		// this.svgWordCloud = d3.select("#svgMainID").select(".depth").select("g").append("svg")
@@ -19,7 +19,7 @@ class Treemap {
 
 		this.createTreemap();		
 	}
-
+	
 	createTreemap(){
 		var that = this;
 		d3.json("treemappreprocessado.json", function(err, res) {
@@ -168,7 +168,7 @@ class Treemap {
 	    function display(d) {
 	        grandparent
 	            .datum(d.parent)
-	            .on("click", transition)
+				.on("click", transition)
 	            .select("text")
 	            .text(name(d));
 
@@ -184,7 +184,7 @@ class Treemap {
 	                return d._children;
 	            })
 	            .classed("children", true)
-	            .on("click", transition);
+				.on("dblclick", transition);
 
 	        var children = g.selectAll(".child")
 	            .data(function(d) {
@@ -307,6 +307,7 @@ class Treemap {
 
 	        return g;
 	    }
+
 
 	    function text(text) {
 	        text.selectAll("tspan")
