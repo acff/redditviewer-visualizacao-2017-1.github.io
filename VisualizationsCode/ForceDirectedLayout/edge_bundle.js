@@ -3,9 +3,9 @@ class EdgeBundle {
 		this.width = width;
 		this.height = height;
 		this.jsonFile = jsonFile;
-		this.container = container.append("svg")
-			.attr("width", this.width)
-			.attr("height", this.height);
+		//this.container = container.append("svg")
+		//	.attr("width", this.width)
+		//	.attr("height", this.height);
 		this.minThresh = 0;
 		this.maxThresh = 100;
 		
@@ -30,12 +30,12 @@ class EdgeBundle {
 			.append("g")
 			.attr("transform", "translate(" + this.radius + "," + this.radius + ")");
 
-		this.link = this.svg.append("g")
-			.attr("class", "linkGroup")
-			.selectAll(".link");
-		this.node = this.svg.append("g")
-			.attr("class", "nodeGroup")
-			.selectAll(".node");
+		//this.link = this.svg.append("g")
+		//	.attr("class", "linkGroup")
+		//	.selectAll(".link");
+		//this.node = this.svg.append("g")
+		//	.attr("class", "nodeGroup")
+		//	.selectAll(".node");
 	}
 
 	buildEdgeBundle(minThreshold, maxThreshold){

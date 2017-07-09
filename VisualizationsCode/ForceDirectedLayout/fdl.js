@@ -4,6 +4,7 @@ class ForceDirectedGraph {
 		this.height = height;
 		this.jsonFile = jsonFile;
 		this.container = container.append("svg")
+			.attr("class", "FDL_SVG")
 			.attr("width", this.width)
 			.attr("height", this.height);
 
@@ -19,20 +20,22 @@ class ForceDirectedGraph {
 		    .force("link", d3.forceLink()
 					.id(function(d) { return d.id; })
 					//.strength(d3.forceManyBody())
-					.strength(0.8)
+					//.strength(0.1)
 					
 								
-					.distance(100)
+					.distance(120)
 				   )
 			//.force("gravity", 0.05)
 		    .force("charge", d3.forceManyBody()
-								.strength(-3000)
+								.strength(-1000)
 								//.distanceMin(100)
 								//.distanceMax(1000)
 								)
 		    .force("center", d3.forceCenter(this.width / 2, this.height / 2))
 			.force("x", d3.forceX())
-			.force("y", d3.forceY());
+			.force("y", d3.forceY())
+			.alpha(0.5)
+			.velocityDecay(0.5);
 		
 		this.minThresh = 0;
 		this.maxThresh = 100;
@@ -75,12 +78,12 @@ class ForceDirectedGraph {
 			  .enter().append("line")
 			  .attr('stroke', function(d) {
 								var normalized_value = (d.value - min_link_value) / max_link_value; 
-								var color_intensity = 200 - normalized_value*255;
+								var color_intensity = 230 - normalized_value*255;
 								return d3.rgb(color_intensity, color_intensity, color_intensity); 
 							  })
 			  .attr("stroke-width", function(d) {
 										var normalized_value = (d.value - min_link_value) / max_link_value; 
-										var maximum_width = 10;
+										var maximum_width = 6;
 										var size = 1+ normalized_value*maximum_width;
 										return size; 
 										})
@@ -96,6 +99,15 @@ class ForceDirectedGraph {
 							if (!d3.event.active) that.simulation.alphaTarget(0.3).restart();
 							  d.fx = d.x;
 							  d.fy = d.y;
+							  
+							// #CHANGE EXIBITION# Reduce the opacity of all but the neighbouring nodes
+							var d = d3.select(this).node().__data__;
+							node.style("fill-opacity", function (o) {
+								return neighboring(d, o)>0| neighboring(o, d)>0 ? 1 : 0.1;
+							});
+							link.style("opacity", function (o) {
+								return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
+							});
 					  })
 					  .on("drag", function(d){
 							d.fx = d3.event.x;
@@ -105,8 +117,15 @@ class ForceDirectedGraph {
 							if (!d3.event.active) that.simulation.alphaTarget(0);
 							d.fx = null;
 							d.fy = null;
+							
+							// #CHANGE EXIBITION# Put them back to opacity=1
+							node.style("fill-opacity", 1);
+							link.style("opacity", 1);
 					  }))
-				  .on("dblclick", connectedNodes); 
+				  //.on("mouseover", downConnectedNodes)
+				  //.on("mouseout", upConnectedNodes); 
+				  // .on("dblclick", connectedNodes)
+				  ; 
 
 				node.append("circle")
 				 .attr("r", 8)
@@ -126,6 +145,11 @@ class ForceDirectedGraph {
 
 			that.simulation.force("link")
 			  .links(graph.links);
+			  
+		    that.simulation
+			  .alpha(0.5)
+			  .velocityDecay(0.5)
+			  .restart();
 				
 			// that.simulation.force("link", d3.forceLink()
 					// .id(function(d) { return d.id; })
@@ -157,7 +181,11 @@ class ForceDirectedGraph {
 				    .attr("cx", function(d) { return d.x; })
 				    .attr("cy", function(d) { return d.y; });
 
-				d3.selectAll("text")
+				d3.select(".FDL_SVG").selectAll("text")
+					.attr("fill", "black")
+					.style("stroke", "white")
+					.style("stroke-width", 0.5)
+					.style("font-weight", 900)
 					.attr("x", function(d) { return d.x + 10; })
 				    .attr("y", function(d) { return d.y; });
 			}
@@ -165,26 +193,43 @@ class ForceDirectedGraph {
 			function neighboring(a, b) {
 			    return linkedByIndex[a.id + "," + b.id];
 			}
-
-			function connectedNodes() {
-			    if (toggle == 0) {
-			        //Reduce the opacity of all but the neighbouring nodes
-			        var d = d3.select(this).node().__data__;
-			        node.style("fill-opacity", function (o) {
-			            return neighboring(d, o)>0| neighboring(o, d)>0 ? 1 : 0.1;
-			        });
-			        link.style("opacity", function (o) {
-			            return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
-			        });
-			        //Reduce the op
-			        toggle = 1;
-			    } else {
-			        //Put them back to opacity=1
-			        node.style("fill-opacity", 1);
-			        link.style("opacity", 1);
-			        toggle = 0;
-			    }
+			
+			function downConnectedNodes() {
+				//Reduce the opacity of all but the neighbouring nodes
+				var d = d3.select(this).node().__data__;
+				node.style("fill-opacity", function (o) {
+					return neighboring(d, o)>0| neighboring(o, d)>0 ? 1 : 0.1;
+				});
+				link.style("opacity", function (o) {
+					return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
+				});
 			}
+			
+			function upConnectedNodes() {
+				//Put them back to opacity=1
+				node.style("fill-opacity", 1);
+				link.style("opacity", 1);
+			}
+
+			// function connectedNodes() {
+			    // if (toggle == 0) {
+			        // // Reduce the opacity of all but the neighbouring nodes
+			        // var d = d3.select(this).node().__data__;
+			        // node.style("fill-opacity", function (o) {
+			            // return neighboring(d, o)>0| neighboring(o, d)>0 ? 1 : 0.1;
+			        // });
+			        // link.style("opacity", function (o) {
+			            // return d.index==o.source.index | d.index==o.target.index ? 1 : 0.1;
+			        // });
+			        // // Reduce the op
+			        // toggle = 1;
+			    // } else {
+			        // // Put them back to opacity=1
+			        // node.style("fill-opacity", 1);
+			        // link.style("opacity", 1);
+			        // toggle = 0;
+			    // }
+			// }
 			
 		});	
 	}
@@ -193,6 +238,7 @@ class ForceDirectedGraph {
 
 	//adjust threshold
 	minThreshold(thresh) {
+		//debugger
 		var that = this;
 		that.minThresh = thresh;
 		//debugger
@@ -200,8 +246,11 @@ class ForceDirectedGraph {
 		d3.selectAll(".links").remove();
 		that.buildFDG(that.minThresh/100.0, that.maxThresh/100.0);
 		//that.simulation.stop();
-		that.simulation.restart();		
-		that.simulation.on();
+		that.simulation
+		.alpha(0.5)
+		.velocityDecay(0.5)
+		.restart();
+		//that.simulation.on();
 		// that.simulation.tick();
 	}
 	
@@ -212,8 +261,11 @@ class ForceDirectedGraph {
 		d3.selectAll(".nodes").remove();
 		d3.selectAll(".links").remove();
 		that.buildFDG(that.minThresh/100.0, that.maxThresh/100.0);
-		that.simulation.restart();	
-		that.simulation.on();		
+		that.simulation
+		.alpha(0.5)
+		.velocityDecay(0.5)
+		.restart();
+		//that.simulation.on();		
 	}
 
 }

@@ -17,7 +17,7 @@
 .node:hover,
 .node--source,
 .node--target {
-  font-weight: 700;
+  font-weight: 900;
 }
 
 .node--source {
