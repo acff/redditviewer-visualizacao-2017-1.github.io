@@ -20,7 +20,17 @@
     var hist = new Histogram(container, xScale, "../Histogram/resultByDay.csv", "comicbooks", "h1");
     hist.buildHistogram();
 
-    var hist2 = new Histogram(container, xScale2, "../Histogram/resultByHour.csv", "comicbooks");
+    var hist2 = new Histogram(container, xScale2, "../Histogram/resultByHour.csv", "comicbooks", "h2");
     hist2.buildHistogram();
+
+   var myDispatchFromFDL = d3.dispatch("selectionChanged");
+    myDispatchFromFDL.on("selectionChanged",function(){
+        //console.log(this.objects);//histogram.refresh(this.objects);
+        hist.updateHistogram(this.objects);
+        hist2.updateHistogram(this.objects);
+    });
+
+    fdl.dispatch = myDispatchFromFDL;
+
   </script>
 </body>

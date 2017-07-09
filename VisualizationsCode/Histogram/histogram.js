@@ -1,7 +1,7 @@
 class Histogram {
 	constructor(container, xInfo, file, subreddit, id) {
 		this.margin =  {top: 20, right: 40, bottom: 20, left: 40};
-        this.width = 600 - this.margin.left - this.margin.right;
+        this.width = 500 - this.margin.left - this.margin.right;
         this.height = 300 - this.margin.top - this.margin.bottom ;
 
         this.xscale = d3.scaleBand()
@@ -63,11 +63,11 @@ class Histogram {
 		var idReal ='.'+this.idd;
 		var result = this.getData(subreddit, this.data);
 	    var bars = d3.select(idReal).selectAll('rect').data(result);
-	    /*
+	    
 	    console.log(this.idd + "  --------------------------------------------------------");
 		result.forEach(function(d){
 			console.log(d);
-		});*/
+		});
 
 		//Update scale
 		this.yscale.domain([0, d3.max(result, function (d) { return d.value; })])

@@ -60,7 +60,10 @@ class ForceDirectedGraph {
 						d.fx = null;
 						d.fy = null;
 			      }))
-			  .on("dblclick", connectedNodes); 
+			  .on("dblclick", connectedNodes)
+			  .on("mouseover", function(d){
+			  	dispatchFunc(that, d);
+			  }); 
 
 			node.append("circle")
 			 .attr("r", 8)
@@ -70,6 +73,7 @@ class ForceDirectedGraph {
 			  .text(function(d) { return d.group; });
 
 			node.append("text")
+				.attr("class", "nodeText")
 			    .text(function(d) { return d.id; });
 
 			that.simulation
@@ -90,7 +94,7 @@ class ForceDirectedGraph {
 				    .attr("cx", function(d) { return d.x; })
 				    .attr("cy", function(d) { return d.y; });
 
-				d3.selectAll("text")
+				d3.selectAll(".nodeText")
 					.attr("x", function(d) { return d.x + 10; })
 				    .attr("y", function(d) { return d.y; });
 			}
@@ -117,6 +121,11 @@ class ForceDirectedGraph {
 			        link.style("opacity", 1);
 			        toggle = 0;
 			    }
+
+			}
+
+			function dispatchFunc(widge, node){
+				widge.dispatch.call("selectionChanged", {objects:node.id});
 			}
 		});	
 	}	
