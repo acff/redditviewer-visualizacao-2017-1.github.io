@@ -1,4 +1,4 @@
-class Treemap {
+	class Treemap {
 	constructor() {
 		this.defaults = {
 		    margin: {top: 24, right: 0, bottom: 0, left: 0},
@@ -244,15 +244,7 @@ class Treemap {
 					//d3.selectAll(".child").style("fill", "white");
 
 					// uma coisa de cada vez
-					var frequency_list = [{"text":"study","size":40},{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
-					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
-					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
-					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
-					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":150},{"text":"relation","size":5},{"text":"things","size":190},{"text":"asd","size":530},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
-					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"relation","size":5},{"text":"things","size":10},{"text":"asd","size":640},{"text":"ggg","size":90},{"text":"jujubas","size":440},{"text":"Galinaceo","size":90}
-					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":10},{"text":"Jenipapo","size":480},{"text":"things","size":10},{"text":"4323","size":60},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
-					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":140},{"text":"relation","size":5},{"text":"things","size":140},{"text":"asd","size":130},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}
-					,{"text":"motion","size":15},{"text":"forces","size":10},{"text":"electricity","size":15},{"text":"movement","size":120},{"text":"relation","size":5},{"text":"things","size":170},{"text":"asd","size":640},{"text":"ggg","size":50},{"text":"jujubas","size":70},{"text":"Galinaceo","size":90}];
+					
 				    var svgWordCloud = d3.select("svg").append("svg")
 				    		.attr("class", "JUJUBAS")
 						    .append("g")
@@ -262,8 +254,8 @@ class Treemap {
 				    		//.attr("transform", "translate("+ (0) +","+margin+")")
 				            .attr("width",  wordCloud_w)
 				            .attr("height", wordCloud_h);
-				            
-				    var myWordCloud = new WordCloud(wordCloud_w, wordCloud_h, frequency_list, null);
+							
+				    var myWordCloud = new WordCloud(wordCloud_w, wordCloud_h, eval(d.key), null);
 				} else {
 					d3.select(".JUJUBAS").remove();
 				}
