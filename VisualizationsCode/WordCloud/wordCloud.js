@@ -10,10 +10,10 @@ class WordCloud{
 			            	"#555", "#444", "#333", "#222"]);
         var that = this;
 		d3.layout.cloud()
-    		.size([this.width, this.height])
+    		.size([this.width*0.90, this.height*0.90])
             .words(frequency_list)
             .rotate(0)
-            .fontSize(function(d) { return d.size; })
+            .fontSize(function(d) { if(d.size<150){return d.size}else{return 150}; })
             .on("end", this.draw)
             .start();
 	}	

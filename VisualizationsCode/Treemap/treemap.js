@@ -233,7 +233,7 @@
 	        function transition(d) {
 
 	        	if(d && d.values.length == 1){
-					var margin_x = 40;
+					var margin_x = 120;
 					var margin_y = 150;
 
 					var pad_x = 550;
