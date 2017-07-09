@@ -64,10 +64,10 @@ class Histogram {
 		var result = this.getData(subreddit, this.data);
 	    var bars = d3.select(idReal).selectAll('rect').data(result);
 	    
-	    console.log(this.idd + "  --------------------------------------------------------");
-		result.forEach(function(d){
-			console.log(d);
-		});
+	    // console.log(this.idd + "  --------------------------------------------------------");
+		// result.forEach(function(d){
+			// console.log(d);
+		// });
 
 		//Update scale
 		this.yscale.domain([0, d3.max(result, function (d) { return d.value; })])
