@@ -17,6 +17,8 @@ class EdgeBundle {
 		this.cluster = d3.cluster()
 			.size([360, this.innerRadius]);
 
+		this.color = d3.scaleOrdinal(d3.schemeCategory20);
+			
 		this.line = d3.radialLine()
 			.curve(d3.curveBundle.beta(0.85))
 			.radius(function(d) { return d.y; })
@@ -70,7 +72,7 @@ class EdgeBundle {
 					var con_link_group_name = graph.nodes.filter(function (d) {return d.id == con_link.target})[0].group;
 					imports_value.push(con_link_group_name+"."+con_link.target);
 				})
-			    classes.push({name: node.group+"."+node.id, size: 42, imports:imports_value});
+			    classes.push({name: node.group+"."+node.id, size: 42, imports:imports_value, group: node.group});
 			});
 			
 			// Begins the joy
@@ -89,41 +91,66 @@ class EdgeBundle {
 			.data(root.leaves())
 			.enter().append("text")
 			  .attr("class", "node")
+			  .attr("fill", function(d) {
+					return that.color(d.data.group);
+				})
 			  .attr("dy", "0.31em")
 			  .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
 			  .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
 			  .text(function(d) { return d.data.key; })
-			  //.on("mouseover", that.mouseovered)
-			  //.on("mouseout", that.mouseouted);
+			  .on("mouseover", function(d){
+				  that.node
+					  .each(function(n) { n.target = n.source = false; });
+
+					that.link
+					  .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
+					  .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+					.filter(function(l) { return l.target === d || l.source === d; })
+					  .raise();
+
+					that.node
+					  .classed("node--target", function(n) { return n.target; })
+					  .classed("node--source", function(n) { return n.source; });
+			  })
+			  .on("mouseout", function(d){
+					that.link
+					  .classed("link--target", false)
+					  .classed("link--source", false);
+
+					that.node
+					  .classed("node--target", false)
+					  .classed("node--source", false);
+			  })
+			  ;
 			
 		});	
 	}
 	
 	
-	mouseovered(d) {
-		this.node
-		  .each(function(n) { n.target = n.source = false; });
+	// mouseovered(d) {
+		// this.node
+		  // .each(function(n) { n.target = n.source = false; });
 
-		this.link
-		  .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
-		  .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
-		.filter(function(l) { return l.target === d || l.source === d; })
-		  .raise();
+		// this.link
+		  // .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
+		  // .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+		// .filter(function(l) { return l.target === d || l.source === d; })
+		  // .raise();
 
-		this.node
-		  .classed("node--target", function(n) { return n.target; })
-		  .classed("node--source", function(n) { return n.source; });
-	}
+		// this.node
+		  // .classed("node--target", function(n) { return n.target; })
+		  // .classed("node--source", function(n) { return n.source; });
+	// }
 
-	mouseouted(d) {
-		this.link
-		  .classed("link--target", false)
-		  .classed("link--source", false);
+	// mouseouted(d) {
+		// this.link
+		  // .classed("link--target", false)
+		  // .classed("link--source", false);
 
-		this.node
-		  .classed("node--target", false)
-		  .classed("node--source", false);
-	}
+		// this.node
+		  // .classed("node--target", false)
+		  // .classed("node--source", false);
+	// }
 
 	// Lazily construct the package hierarchy from class names.
 	packageHierarchy(classes) {
@@ -165,7 +192,7 @@ class EdgeBundle {
 			  imports.push(map[d.data.name].path(map[i]));
 			});
 		});
-
+		
 		return imports;
 	}
 	
