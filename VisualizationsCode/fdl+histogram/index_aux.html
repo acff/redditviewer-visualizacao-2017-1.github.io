@@ -46,7 +46,7 @@
 #histogram_hours{
     margin-left: 55%;
 }
-#view_top, #view_down{
+#view_top, #view_down, #controller{
     width: 100%; 
     overflow: hidden;
     margin-top: 1%;
@@ -73,7 +73,9 @@ h2 {
     margin: 0 auto;
 }
 .controller{
-    margin-left: 2%;
+    margin: 0 auto;
+    display: block;
+
 }
 body{
     background-color: #041a2f;
@@ -86,6 +88,10 @@ body{
     font-size: 14px;
 
 }
+#controller_text h1, h2{
+    display: inline;
+    margin-left: 12%;
+}
 </style>
 <body>
     <div id="view_subtitle">
@@ -97,7 +103,11 @@ body{
         <div id="edge"> </div>
     </div>
     <div id="controller">
-        <h2>Edge strength filter</h2>
+        <div id="controller_text">
+            <h1 id="min_force">lalal</h1>
+            <h2>Edge strength filter</h2>
+            <h1 id="max_force">lalal</h1>
+        </div>
        <svg class="controller" width="500" height="60"></svg>
     </div>
 
@@ -184,6 +194,11 @@ body{
             min = d3.event.selection.map(x.invert)[0];
             max = d3.event.selection.map(x.invert)[1];
             changeThreshold(min, max);
+
+            d3.select("#min_force").html("MIN");  
+            d3.select("#max_force").html("Max");  
+
+
         }
 
         pra_torar_na_emenda = true;
