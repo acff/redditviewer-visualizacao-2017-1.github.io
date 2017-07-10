@@ -24,7 +24,7 @@
 		var that = this;
 		d3.json("treemappreprocessado.json", function(err, res) {
 	        if (!err) {
-	            console.log(res);
+	            // console.log(res);
 	            var data = d3.nest().key(function(d) {
 	                return d.region;
 	            }).key(function(d) {
@@ -113,7 +113,7 @@
 	    initialize(root);
 	    accumulate(root);
 	    layout(root);
-	    console.log(root);
+	    // console.log(root);
 	    display(root);
 
 	    if (window.parent !== window) {
@@ -245,17 +245,18 @@
 
 					// uma coisa de cada vez
 					
-				    var svgWordCloud = d3.select("svg").append("svg")
-				    		.attr("class", "JUJUBAS")
-						    .append("g")
-			                // without the transform, words words would get cutoff to the left and top, they would
-			                // appear outside of the SVG area
-			                .attr("transform", "translate("+pad_x+","+pad_y+")")
-				    		//.attr("transform", "translate("+ (0) +","+margin+")")
-				            .attr("width",  wordCloud_w)
-				            .attr("height", wordCloud_h);
-							
-				    var myWordCloud = new WordCloud(wordCloud_w, wordCloud_h, eval(d.key), null);
+          var svgWordCloud = d3.select("svg").append("svg")
+              .attr("class", "JUJUBAS")
+              .append("g")
+                    // without the transform, words words would get cutoff to the left and top, they would
+                    // appear outside of the SVG area
+                    .attr("transform", "translate("+pad_x+","+pad_y+")")
+              //.attr("transform", "translate("+ (0) +","+margin+")")
+                  .attr("width",  wordCloud_w)
+                  .attr("height", wordCloud_h);
+            var subreddit_words = eval(d.key);
+            // debugger
+				    var myWordCloud = new WordCloud(wordCloud_w, wordCloud_h, subreddit_words, null);
 				} else {
 					d3.select(".JUJUBAS").remove();
 				}
