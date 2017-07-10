@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="../Histogram/histogram.js"></script>
+    <script src="../ForceDirectedLayout/fdl.js"></script>
+    <script src="../ForceDirectedLayout/edge_bundle.js"></script>
+   
+    <link rel="stylesheet" type="text/css" href="../Histogram/style.css">
+    <link rel="stylesheet" type="text/css" href="../ForceDirectedLayout/style.css">
+    <link rel="stylesheet" type="text/css" href="../ForceDirectedLayout/style.css">
+    <link rel="stylesheet" type="text/css" href="../ForceDirectedLayout/style_edge.css">
+</head>
+<style type="text/css">
+#view_subtitle {
+    border-radius: 25px;
+    border: 2px solid #d8d5da;
+    background: #eeeeee;
+    height: 50px;
+}
+#subtitle{
+    width: 60%;
+    height: 50px;
+    display: block;
+    margin: auto;
+    padding-top: 12px;
+}
+#fdl{
+    width: 50%; 
+    float: left;
+    height:600px;
+    border: 2px solid #d8d5da;
+}
+#edge{
+    margin-left: 55%;
+    height:600px;
+    border: 2px solid #d8d5da;
+}
+#histogram_weekday{
+ width: 50%; 
+    float: left;
+    border: 2px solid #d8d5da;
+}
+#histogram_hours{
+    margin-left: 55%;
+    border: 2px solid #d8d5da;
+
+}
+#view_top, #view_down{
+    width: 100%; 
+    overflow: hidden;
+}
+#view_down{
+    margin-top: 2%;
+}
+h2 {
+    color: #171810;
+    text-align:center;
+    font-size: 14px;
+    font-family: "Helvetica";
+}
+#controller{
+    margin-top: 10px;
+    margin-right: 31%;
+    margin-left: 30%;
+    border: 2px solid #d8d5da;
+
+}
+</style>
+<body>
+    <div id="view_subtitle">
+        <svg id="subtitle"></svg>
+    </div>
+
+    <div id="view_top">
+        <div id="fdl"></div>
+        <div id="edge"> </div>
+    </div>
+    <div id="controller">
+        <h2>Control the number of edges</h2>
+       <svg class="controller" width="500" height="60"></svg>
+    </div>
+
+    <div id="view_down">
+        <div id="histogram_weekday">
+            <h2>Comments <i id="sub_weekday"> comicbooks </i> by weekday</h2>
+        </div>
+         <div id="histogram_hours">
+            <h2>Comments <i id="sub_hour"> comicbooks </i> by hour</h2>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var svg_subtitle = d3.select("#subtitle");
+        createSubtitle(svg_subtitle);
+
+        var body_fdl = d3.select("#fdl");
+        var fdl = new ForceDirectedGraph(500, 350, body_fdl, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");    
+        fdl.buildFDG(0, 1);
+
+        var body_edge = d3.select("#edge");
+        var edgeBundle = new EdgeBundle(900, 600, body_edge, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");  
+        edgeBundle.buildEdgeBundle(0, 1);
+
+        var body_histogram_weekday = d3.select("#histogram_weekday");
+        var xScale = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        var hist = new Histogram(body_histogram_weekday, xScale, "../Histogram/resultByDay.csv", "comicbooks", "h1");
+        hist.buildHistogram();
+
+        var body_histogram_hour = d3.select("#histogram_hours");
+        var xScale2 = Array.apply(null, {length: 24}).map(Number.call, Number);
+        var hist2 = new Histogram(body_histogram_hour, xScale2, "../Histogram/resultByHour.csv", "comicbooks", "h2");
+        hist2.buildHistogram();
+
+        var myDispatchFromFDL = d3.dispatch("selectionChanged");
+        myDispatchFromFDL.on("selectionChanged",function(){
+            //console.log(this.objects);//histogram.refresh(this.objects);
+            hist.updateHistogram(this.objects);
+            hist2.updateHistogram(this.objects);
+            d3.select("#sub_weekday").html(this.objects);
+            d3.select("#sub_hour").html(this.objects);  
+        });
+        fdl.dispatch = myDispatchFromFDL;
+
+        var myDispatchFromEdgeBundle = d3.dispatch("selectionChanged");
+        myDispatchFromEdgeBundle.on("selectionChanged",function(){
+            //console.log(this.objects);//histogram.refresh(this.objects);
+            hist.updateHistogram(this.objects);
+            hist2.updateHistogram(this.objects);
+            d3.select("#sub_weekday").html(this.objects);
+            d3.select("#sub_hour").html(this.objects);         
+        });
+        edgeBundle.dispatch = myDispatchFromEdgeBundle;
+
+
+//BRUSH ----------------------------------------------------------------------------
+        var min = 0,
+        max = 0;
+        var data = d3.range(800).map(Math.random);
+        var svg = d3.select(".controller"),
+            width = +svg.attr("width") - 40,
+            height = +svg.attr("height") - 20,
+            g = svg.append("g").attr("transform", "translate(" + 5 + "," + 0+ ")");
+        var x = d3.scaleLinear().range([0, width]).domain([0, 100]),
+            y = d3.randomNormal(height / 2, height / 8);
+        var brush = d3.brushX()
+            .extent([[0, 0], [width, height]])
+            .on("start brush end", brushmoved);
+        g.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+        var gBrush = g.append("g")
+            .attr("class", "brush")
+            .call(brush);
+        gBrush.call(brush.move, [0, 100].map(x));
+        function brushmoved() {
+            var s = d3.event.selection;
+            console.log( d3.event.selection.map(x.invert));
+            min = d3.event.selection.map(x.invert)[0];
+            max = d3.event.selection.map(x.invert)[1];
+            changeThreshold(min, max);
+        }
+
+        //controller aux functions
+        function changeThreshold(min_threshold, max_threshold) {
+            fdl.updateThreshold(min_threshold, max_threshold);
+            edgeBundle.updateThreshold(min_threshold, max_threshold);
+        }
+
+        //subtitle 
+        function createSubtitle(svg) {
+            var subs = ["entertainment", "gaming", "humor", "lifestyle", "learning", "news", "television"];
+            var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+            for(var i=0; i<subs.length; i++) {
+              svg.append('rect')
+                .attr("fill", color(subs[i]))
+                .attr('x', i*100)
+                .attr('y', 0)
+                .attr("width", 20)
+                .attr("height", 20);
+
+              svg.append("text")
+                .attr('x', 22 + i*100)
+                .attr("y", 15)
+                .style("font-size", "11px")               
+                .style("margin-right", "1%")
+                .text(subs[i].charAt(0).toUpperCase() + subs[i].slice(1));
+            }
+        }
+    </script>
+</body>

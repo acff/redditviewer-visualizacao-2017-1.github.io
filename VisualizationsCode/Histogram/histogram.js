@@ -64,10 +64,10 @@ class Histogram {
 		var result = this.getData(subreddit, this.data);
 	    var bars = d3.select(idReal).selectAll('rect').data(result);
 	    
-	    console.log(this.idd + "  --------------------------------------------------------");
-		result.forEach(function(d){
-			console.log(d);
-		});
+	    // console.log(this.idd + "  --------------------------------------------------------");
+		// result.forEach(function(d){
+			// console.log(d);
+		// });
 
 		//Update scale
 		this.yscale.domain([0, d3.max(result, function (d) { return d.value; })])
@@ -77,14 +77,28 @@ class Histogram {
 	    //Update bars
 	    bars.remove();
         d3.select(idReal).selectAll("rect")
-            .data(result, function (d) {return d.label; })
-            .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", function (d) { return that.xscale(d.label); })
-            .attr("y", function (d) { return that.yscale(d.value); })
-            .attr("width", that.xscale.bandwidth())
-            .transition().duration(750)
-            .attr("height", function (d) { return that.height - that.yscale(d.value); });   
+              .data(result, function (d) {return d.label; })
+              .enter().append("rect")
+              .attr("class", "bar")
+              .attr("x", function (d) { return that.xscale(d.label); })
+              //.attr("transform", "scale(-1)")
+              .attr("y", function (d) { return 0; })
+              .attr("width", that.xscale.bandwidth())
+              .attr("transform", function(d){return "translate("+0+","+ (300 - that.margin.top - that.margin.bottom) +")scale(+1,-1)";})
+              .transition().duration(750)
+              .attr("height", function (d) { return that.height - that.yscale(d.value); });  
+              
+        // d3.select(idReal).selectAll("rect")
+            // .data(result, function (d) {return d.label; })
+            // .enter().append("rect")
+            // .attr("class", "bar")
+            // .attr("x", function (d) { return that.xscale(d.label); })
+            // // .attr("transform", "scale(-1)")
+            // .attr("y", function (d) { return that.height/2; })
+            // .attr("width", that.xscale.bandwidth())
+            // .attr("transform", function(d){return "translate("+0+","+ (300 - that.margin.top - that.margin.bottom) +")scale(+1,-1)";})
+            // .transition().duration(750)
+            // .attr("height", function (d) { return that.height - that.yscale(d.value); });   
 	}
 
 	getData(subreddit, data){

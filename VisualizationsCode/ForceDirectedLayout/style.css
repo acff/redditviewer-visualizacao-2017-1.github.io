@@ -1,15 +1,23 @@
-.links line {
-  stroke: #999;
-  stroke-opacity: 0.6;
+h3 {
+    color: #1ABC9C;
+    text-align:center;  
+    font-style: italic;
+    font-size: 14px;
+    font-family: "Helvetica";
 }
 
-.nodes circle {
-  stroke: #fff;
-  stroke-width: 1.5px;
-}
-
-.nodes text {
-  pointer-events: none;
-  font: 13px Georgia;
-}
-
+//.links line {
+//  //stroke: #999;
+//  //stroke-opacity: 0.6;
+//}
+//
+//.nodes circle {
+//  stroke: #fff;
+//  stroke-width: 1.5px;
+//}
+//
+//.nodes text {
+//  pointer-events: none;
+//  font: 13px Georgia;
+//}
+//

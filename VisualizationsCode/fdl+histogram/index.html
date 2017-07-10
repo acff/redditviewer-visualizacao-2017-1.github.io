@@ -4,33 +4,65 @@
     <link rel="stylesheet" type="text/css" href="../ForceDirectedLayout/style.css">
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="../ForceDirectedLayout/fdl.js"></script>
+	<script src="../ForceDirectedLayout/edge_bundle.js"></script>
     <script src="../Histogram/histogram.js"></script>
     <link rel="stylesheet" type="text/css" href="../Histogram/style.css">
+	<link rel="stylesheet" type="text/css" href="../ForceDirectedLayout/style.css">
+	<link rel="stylesheet" type="text/css" href="../ForceDirectedLayout/style_edge.css">
 </head>
 <body>
   <script>
     var body = d3.select("body").append("div").attr("id", "fdl").style("float", "left");
- 	var fdl = new ForceDirectedGraph(700, 700, body, "../ForceDirectedLayout/test.json");    
- 	fdl.buildFDG();
+ 	var fdl = new ForceDirectedGraph(900, 600, body, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");    
+ 	fdl.buildFDG(0, 1);
 
+	var edgeBundle = new EdgeBundle(900, 600, body, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");  
+	edgeBundle.buildEdgeBundle(0, 1);
+	
 	var xScale = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     var xScale2 = Array.apply(null, {length: 24}).map(Number.call, Number);
     var container = d3.select("body").append("div").attr("id", "diagram").style("width", "400px").style("position", "absolute").style("margin-left", "60%");
 
     var hist = new Histogram(container, xScale, "../Histogram/resultByDay.csv", "comicbooks", "h1");
     hist.buildHistogram();
-
+    
     var hist2 = new Histogram(container, xScale2, "../Histogram/resultByHour.csv", "comicbooks", "h2");
     hist2.buildHistogram();
-
-   var myDispatchFromFDL = d3.dispatch("selectionChanged");
+	
+    var myDispatchFromFDL = d3.dispatch("selectionChanged");
     myDispatchFromFDL.on("selectionChanged",function(){
         //console.log(this.objects);//histogram.refresh(this.objects);
         hist.updateHistogram(this.objects);
         hist2.updateHistogram(this.objects);
     });
-
     fdl.dispatch = myDispatchFromFDL;
 
+	var myDispatchFromEdgeBundle = d3.dispatch("selectionChanged");
+	myDispatchFromEdgeBundle.on("selectionChanged",function(){
+        //console.log(this.objects);//histogram.refresh(this.objects);
+        hist.updateHistogram(this.objects);
+        hist2.updateHistogram(this.objects);
+    });
+
+
+    edgeBundle.dispatch = myDispatchFromEdgeBundle;
+
+	function changeMinThreshold(new_threshold) {
+		fdl.minThreshold(new_threshold);
+		edgeBundle.minThreshold(new_threshold);
+	}
+	
+	function changeMaxThreshold(new_threshold) {
+		fdl.maxThreshold(new_threshold);
+		edgeBundle.maxThreshold(new_threshold);
+	}
+	
   </script>
+    <form>
+    <h3> Bottom threshold  0% <input type="range" id="minThersholdSlider" name="pointsMin" value = 0 min="0" max="100" onchange="changeMinThreshold(this.value)"> 100% </h3>
+  </form>
+  <form>
+    <h3> Upper threshold  0% <input type="range" id="maxThersholdSlider" name="pointsMax" value = 100 min="0" max="100" onchange="changeMaxThreshold(this.value)"> 100% </h3>
+  </form>
+  
 </body>
