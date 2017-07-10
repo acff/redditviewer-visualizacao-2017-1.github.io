@@ -254,8 +254,10 @@
               //.attr("transform", "translate("+ (0) +","+margin+")")
                   .attr("width",  wordCloud_w)
                   .attr("height", wordCloud_h);
-            var subreddit_words = eval(d.key);
-            // debugger
+            // var subreddit_words = eval(d.key);
+            // var subreddit_words = eval(d.key).slice(0);
+            var subreddit_words = JSON.parse(JSON.stringify(eval(d.key)));
+            //debugger
 				    var myWordCloud = new WordCloud(wordCloud_w, wordCloud_h, subreddit_words, null);
 				} else {
 					d3.select(".JUJUBAS").remove();
