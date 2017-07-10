@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
+    <title>Reddit Viewer</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="../Histogram/histogram.js"></script>
     <script src="../ForceDirectedLayout/fdl.js"></script>
@@ -14,9 +15,10 @@
 <style type="text/css">
 #view_subtitle {
     border-radius: 25px;
-    border: 2px solid #d8d5da;
-    background: #eeeeee;
+    border: 2px solid #35465c;
+    background: #FFFFFF;
     height: 50px;
+    opacity:0.9;
 }
 #subtitle{
     width: 60%;
@@ -29,26 +31,27 @@
     width: 50%; 
     float: left;
     height:600px;
-    border: 2px solid #d8d5da;
+  
 }
 #edge{
     margin-left: 55%;
     height:600px;
-    border: 2px solid #d8d5da;
+ 
 }
 #histogram_weekday{
- width: 50%; 
+    width: 50%; 
     float: left;
-    border: 2px solid #d8d5da;
 }
 #histogram_hours{
     margin-left: 55%;
-    border: 2px solid #d8d5da;
-
 }
 #view_top, #view_down{
     width: 100%; 
     overflow: hidden;
+    margin-top: 1%;
+    background: #FFFFFF ;
+    border: 2px solid #d8d5da;
+    border-radius: 25px;
 }
 #view_down{
     margin-top: 2%;
@@ -63,8 +66,15 @@ h2 {
     margin-top: 10px;
     margin-right: 31%;
     margin-left: 30%;
-    border: 2px solid #d8d5da;
-
+    border: 2px dotted #d8d5da;
+    background: #FFFFFF  ;
+    border-radius: 20px;
+}
+body{
+    background-color: #041a2f;
+}
+#histogram_weekday > svg, #histogram_hours svg{
+    margin-left: 5%;
 }
 </style>
 <body>
