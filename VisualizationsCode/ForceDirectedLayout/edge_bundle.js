@@ -59,6 +59,7 @@ class EdgeBundle {
 	}
 	
 	BotaPraTorar(minThreshold, maxThreshold){
+		minThreshold+= 0.035;
 		// debugger
 		this.link = this.svg.append("g")
 			.attr("class", "linkGroup")

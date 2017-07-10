@@ -60,6 +60,7 @@ class ForceDirectedGraph {
 	}
 
 	BotaPraTorar(minThreshold, maxThreshold){
+		minThreshold+= 0.035;
 		var that = this;
 
 		var linkedByIndex = {};
