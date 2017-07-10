@@ -77,7 +77,7 @@ h2 {
         <div id="edge"> </div>
     </div>
     <div id="controller">
-        <h2>Control the number of edges</h2>
+        <h2>Edge strength filter</h2>
        <svg class="controller" width="500" height="60"></svg>
     </div>
 
@@ -105,7 +105,7 @@ h2 {
         fdl.updateThreshold(min, max);
 
         var body_edge = d3.select("#edge");
-        var edgeBundle = new EdgeBundle(900, 600, body_edge, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");  
+        var edgeBundle = new EdgeBundle(900, 600, body_edge, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");    
         edgeBundle.updateThreshold(min, max);
 
         var body_histogram_weekday = d3.select("#histogram_weekday");
@@ -160,7 +160,7 @@ h2 {
         gBrush.call(brush.move, [min, max].map(x));
         function brushmoved() {
             var s = d3.event.selection;
-            console.log( d3.event.selection.map(x.invert));
+            //console.log( d3.event.selection.map(x.invert));
             min = d3.event.selection.map(x.invert)[0];
             max = d3.event.selection.map(x.invert)[1];
             changeThreshold(min, max);
