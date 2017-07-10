@@ -46,15 +46,25 @@
     border: 2px solid #d8d5da;
 
 }
-#view_top #view_down{
+#view_top, #view_down{
     width: 100%; 
     overflow: hidden;
+}
+#view_down{
+    margin-top: 2%;
 }
 h2 {
     color: #171810;
     text-align:center;
     font-size: 14px;
     font-family: "Helvetica";
+}
+#controller{
+    margin-top: 10px;
+    margin-right: 31%;
+    margin-left: 30%;
+    border: 2px solid #d8d5da;
+
 }
 </style>
 <body>
@@ -67,12 +77,8 @@ h2 {
         <div id="edge"> </div>
     </div>
     <div id="controller">
-         <form>
-            <h3> Bottom threshold  0% <input type="range" id="minThersholdSlider" name="pointsMin" value = 0 min="0" max="100" onchange="changeMinThreshold(this.value)"> 100% </h3>
-          </form>
-          <form>
-            <h3> Upper threshold  0% <input type="range" id="maxThersholdSlider" name="pointsMax" value = 100 min="0" max="100" onchange="changeMaxThreshold(this.value)"> 100% </h3>
-          </form>
+        <h2>Control the number of edges</h2>
+       <svg class="controller" width="500" height="60"></svg>
     </div>
 
     <div id="view_down">
@@ -106,7 +112,6 @@ h2 {
         var hist2 = new Histogram(body_histogram_hour, xScale2, "../Histogram/resultByHour.csv", "comicbooks", "h2");
         hist2.buildHistogram();
 
-
         var myDispatchFromFDL = d3.dispatch("selectionChanged");
         myDispatchFromFDL.on("selectionChanged",function(){
             //console.log(this.objects);//histogram.refresh(this.objects);
@@ -114,7 +119,6 @@ h2 {
             hist2.updateHistogram(this.objects);
             d3.select("#sub_weekday").html(this.objects);
             d3.select("#sub_hour").html(this.objects);  
-           
         });
         fdl.dispatch = myDispatchFromFDL;
 
@@ -124,16 +128,42 @@ h2 {
             hist.updateHistogram(this.objects);
             hist2.updateHistogram(this.objects);
             d3.select("#sub_weekday").html(this.objects);
-            d3.select("#sub_hour").html(this.objects);         });
-
-
+            d3.select("#sub_hour").html(this.objects);         
+        });
         edgeBundle.dispatch = myDispatchFromEdgeBundle;
 
 
+//BRUSH ----------------------------------------------------------------------------
+        var min = 0,
+        max = 0;
+        var data = d3.range(800).map(Math.random);
+        var svg = d3.select(".controller"),
+            width = +svg.attr("width") - 40,
+            height = +svg.attr("height") - 20,
+            g = svg.append("g").attr("transform", "translate(" + 5 + "," + 0+ ")");
+        var x = d3.scaleLinear().range([0, width]).domain([0, 100]),
+            y = d3.randomNormal(height / 2, height / 8);
+        var brush = d3.brushX()
+            .extent([[0, 0], [width, height]])
+            .on("start brush end", brushmoved);
+        g.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+        var gBrush = g.append("g")
+            .attr("class", "brush")
+            .call(brush);
+        gBrush.call(brush.move, [0, 100].map(x));
+        function brushmoved() {
+            var s = d3.event.selection;
+            console.log( d3.event.selection.map(x.invert));
+            min = d3.event.selection.map(x.invert)[0];
+            max = d3.event.selection.map(x.invert)[1];
+        }
 
         //controller aux functions
         function changeMinThreshold(new_threshold) {
-            fdl.minThreshold(new_threshold);
+            fdl.minThreshold(min, max);
             edgeBundle.minThreshold(new_threshold);
         }
         

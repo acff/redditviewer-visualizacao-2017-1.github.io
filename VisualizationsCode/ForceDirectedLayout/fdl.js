@@ -308,14 +308,14 @@ class ForceDirectedGraph {
 	//---Insert-------
 
 	//adjust threshold
-	minThreshold(thresh) {
+	minThreshold(min, max) {
 		//debugger
 		var that = this;
 		that.minThresh = thresh;
 		//debugger
 		d3.selectAll(".nodes").remove();
 		d3.selectAll(".links").remove();
-		that.buildFDG(that.minThresh/100.0, that.maxThresh/100.0);
+		that.buildFDG(min/100.0, max/100.0);
 		//that.simulation.stop();
 		that.simulation
 		.alpha(0.5)
