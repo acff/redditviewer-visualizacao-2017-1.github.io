@@ -217,30 +217,13 @@ class EdgeBundle {
 	}
 	
 	//---Insert-------
-
-	//adjust threshold
-	minThreshold(thresh) {
-		var that = this;
-		that.minThresh = thresh;
-		//debugger
-		d3.selectAll(".nodeGroup").remove();
+  updateThreshold(min_threshold, max_threshold) {
+    var that = this;
+    that.minThresh = min_threshold;
+    that.maxThresh = max_threshold;
+    d3.selectAll(".nodeGroup").remove();
 		d3.selectAll(".linkGroup").remove();
 		that.buildEdgeBundle(that.minThresh/100.0, that.maxThresh/100.0);
-		////that.simulation.stop();
-		//that.simulation.restart();		
-		//that.simulation.on();
-		//// that.simulation.tick();
-	}
-	
-	maxThreshold(thresh) {
-		var that = this;
-		that.maxThresh = thresh;
-		//debugger
-		d3.selectAll(".nodeGroup").remove();
-		d3.selectAll(".linkGroup").remove();
-		that.buildEdgeBundle(that.minThresh/100.0, that.maxThresh/100.0);
-		//that.simulation.restart();	
-		//that.simulation.on();		
-	}
-
+  }
+  
 }

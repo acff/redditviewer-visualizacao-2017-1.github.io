@@ -159,17 +159,13 @@ h2 {
             console.log( d3.event.selection.map(x.invert));
             min = d3.event.selection.map(x.invert)[0];
             max = d3.event.selection.map(x.invert)[1];
+            changeThreshold(min, max);
         }
 
         //controller aux functions
-        function changeMinThreshold(new_threshold) {
-            fdl.minThreshold(min, max);
-            edgeBundle.minThreshold(new_threshold);
-        }
-        
-        function changeMaxThreshold(new_threshold) {
-            fdl.maxThreshold(new_threshold);
-            edgeBundle.maxThreshold(new_threshold);
+        function changeThreshold(min_threshold, max_threshold) {
+            fdl.updateThreshold(min_threshold, max_threshold);
+            edgeBundle.updateThreshold(min_threshold, max_threshold);
         }
 
         //subtitle 

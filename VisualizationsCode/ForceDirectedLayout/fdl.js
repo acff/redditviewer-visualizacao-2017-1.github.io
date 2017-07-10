@@ -29,7 +29,7 @@ class ForceDirectedGraph {
 								//.distanceMin(100)
 								//.distanceMax(1000)
 								)
-		    .force("center", d3.forceCenter(this.width+50/ 2, this.height+120 / 2))
+		    .force("center", d3.forceCenter(50+this.width/ 2, 120+this.height / 2))
 			.force("x", d3.forceX())
 			.force("y", d3.forceY())
 			.alpha(0.5)
@@ -307,13 +307,11 @@ class ForceDirectedGraph {
 	
 	//---Insert-------
 
-	//adjust threshold
-	minThreshold(min, max) {
-		//debugger
-		var that = this;
-		that.minThresh = thresh;
-		//debugger
-		d3.selectAll(".nodes").remove();
+  updateThreshold(min_threshold, max_threshold) {
+    var that = this;
+    that.minThresh = min_threshold;
+    that.maxThresh = max_threshold;
+    d3.selectAll(".nodes").remove();
 		d3.selectAll(".links").remove();
 		that.buildFDG(min/100.0, max/100.0);
 		//that.simulation.stop();
@@ -321,22 +319,5 @@ class ForceDirectedGraph {
 		.alpha(0.5)
 		.velocityDecay(0.5)
 		.restart();
-		//that.simulation.on();
-		// that.simulation.tick();
-	}
-	
-	maxThreshold(thresh) {
-		var that = this;
-		that.maxThresh = thresh;
-		//debugger
-		d3.selectAll(".nodes").remove();
-		d3.selectAll(".links").remove();
-		that.buildFDG(that.minThresh/100.0, that.maxThresh/100.0);
-		that.simulation
-		.alpha(0.5)
-		.velocityDecay(0.5)
-		.restart();
-		//that.simulation.on();		
-	}
-
+  }
 }
