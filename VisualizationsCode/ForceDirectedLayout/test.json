@@ -27,7 +27,7 @@
     {"id": "guns", "group": "lifestyle"},
     {"id": "sex", "group": "lifestyle"},
     {"id": "motorcycles", "group": "lifestyle"},
-    {"id": "progressspic", "group": "lifestyle"},
+    {"id": "progresspics", "group": "lifestyle"},
     {"id": "askhistorians", "group": "learning"},
     {"id": "science", "group": "learning"},
     {"id": "askscience", "group": "learning"},
@@ -50,7 +50,6 @@
     {"id": "breakingbad", "group": "television"},
     {"id": "worldnews", "group": "television"},
     {"id": "mylittlepony", "group": "television"},
-    {"id": "progresspics", "group": "television"},
     {"id": "thewalkingdead", "group": "television"},
     {"id": "offbeat", "group": "television"}
   ],
