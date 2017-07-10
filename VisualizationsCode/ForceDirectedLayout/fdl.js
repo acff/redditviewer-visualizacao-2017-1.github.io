@@ -38,6 +38,9 @@ class ForceDirectedGraph {
 		this.minThresh = 0;
 		this.maxThresh = 100;
 		this.graph = null;
+    
+    this.curr_bottom_edge_strength  = 0;
+    this.curr_highest_edge_strength = 10;
 	}
 
 	buildFDG(minThreshold, maxThreshold){
@@ -108,8 +111,8 @@ class ForceDirectedGraph {
 		    linkedByIndex[d.source + "," + d.target] = d.value;
 		});
 
-    var curr_bottom_edge_strength  = (max_link_value- min_link_value)*minThreshold;
-    var curr_highest_edge_strength = (max_link_value- min_link_value)*maxThreshold;
+    that.curr_bottom_edge_strength  = (max_link_value- min_link_value)*minThreshold;
+    that.curr_highest_edge_strength = (max_link_value- min_link_value)*maxThreshold;
     //console.log(curr_bottom_edge_strength);
     //console.log(curr_highest_edge_strength);
     
@@ -124,7 +127,7 @@ class ForceDirectedGraph {
 		  .data(thresholded_links)
 		  .enter().append("line")
 		  .attr('stroke', function(d) {
-							var normalized_value = (d.value -  curr_bottom_edge_strength)/(curr_highest_edge_strength-curr_bottom_edge_strength) ;
+							var normalized_value = (d.value -  that.curr_bottom_edge_strength)/(that.curr_highest_edge_strength - that.curr_bottom_edge_strength) ;
               normalized_value = 1-normalized_value;
               
 							var color_intensity = normalized_value*220;

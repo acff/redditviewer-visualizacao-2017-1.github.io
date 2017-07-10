@@ -104,9 +104,9 @@ body{
     </div>
     <div id="controller">
         <div id="controller_text">
-            <h1 id="min_force">lalal</h1>
-            <h2>Edge strength filter</h2>
-            <h1 id="max_force">lalal</h1>
+            <h2 id="min_force">Min:__</h2>
+            <h2>Edge filter(#users in both subreddits) </h2>
+            <h2 id="max_force">Max:__</h2>
         </div>
        <svg class="controller" width="500" height="60"></svg>
     </div>
@@ -183,7 +183,7 @@ body{
         g.append("g")
             .attr("class", "axis axis--x")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x).tickFormat(function(d) { return (d+"%"); }));
         var gBrush = g.append("g")
             .attr("class", "brush")
             .call(brush);
@@ -195,12 +195,10 @@ body{
             max = d3.event.selection.map(x.invert)[1];
             changeThreshold(min, max);
 
-            d3.select("#min_force").html("MIN");  
-            d3.select("#max_force").html("Max");  
-
-
+            //d3.select("#min_force").html("Min: "+Number((fdl.curr_bottom_edge_strength).toFixed(1)));  
+            //d3.select("#max_force").html("Max: "+Number((fdl.curr_highest_edge_strength).toFixed(1)));  
         }
-
+        
         pra_torar_na_emenda = true;
         
         //controller aux functions
@@ -208,6 +206,8 @@ body{
             if(pra_torar_na_emenda) {
               fdl.updateThreshold(min_threshold, max_threshold);
               edgeBundle.updateThreshold(min_threshold, max_threshold);
+              d3.select("#min_force").html("Min: "+Number((fdl.curr_bottom_edge_strength).toFixed(1)));  
+              d3.select("#max_force").html("Max: "+Number((fdl.curr_highest_edge_strength).toFixed(1)));
             } else {
               // Nothing here, as you can see
             }
