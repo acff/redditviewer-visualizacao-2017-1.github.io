@@ -50,6 +50,12 @@
     width: 100%; 
     overflow: hidden;
 }
+h2 {
+    color: #171810;
+    text-align:center;
+    font-size: 14px;
+    font-family: "Helvetica";
+}
 </style>
 <body>
     <div id="view_subtitle">
@@ -71,10 +77,10 @@
 
     <div id="view_down">
         <div id="histogram_weekday">
-            <h2>Histograma postagem por dia da semana</h2>
+            <h2>Comments <i id="sub_weekday"> comicbooks </i> by weekday</h2>
         </div>
          <div id="histogram_hours">
-            <h2>Histograma postagem por horas</h2>
+            <h2>Comments <i id="sub_hour"> comicbooks </i> by hour</h2>
         </div>
     </div>
 
@@ -106,6 +112,9 @@
             //console.log(this.objects);//histogram.refresh(this.objects);
             hist.updateHistogram(this.objects);
             hist2.updateHistogram(this.objects);
+            d3.select("#sub_weekday").html(this.objects);
+            d3.select("#sub_hour").html(this.objects);  
+           
         });
         fdl.dispatch = myDispatchFromFDL;
 
@@ -114,10 +123,12 @@
             //console.log(this.objects);//histogram.refresh(this.objects);
             hist.updateHistogram(this.objects);
             hist2.updateHistogram(this.objects);
-        });
+            d3.select("#sub_weekday").html(this.objects);
+            d3.select("#sub_hour").html(this.objects);         });
 
 
         edgeBundle.dispatch = myDispatchFromEdgeBundle;
+
 
 
         //controller aux functions
