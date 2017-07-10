@@ -91,16 +91,22 @@ h2 {
     </div>
 
     <script type="text/javascript">
+        // Clylton's variables
+        var pra_torar_na_emenda = false;
+        var min = 30;
+        var max = 80;
+        // End of Clylton's variables
+        
         var svg_subtitle = d3.select("#subtitle");
         createSubtitle(svg_subtitle);
 
         var body_fdl = d3.select("#fdl");
         var fdl = new ForceDirectedGraph(500, 350, body_fdl, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");    
-        fdl.buildFDG(0, 1);
+        fdl.updateThreshold(min, max);
 
         var body_edge = d3.select("#edge");
         var edgeBundle = new EdgeBundle(900, 600, body_edge, "https://acff.github.io/redditviewer-visualizacao-2017-1.github.io/VisualizationsCode/ForceDirectedLayout/test.json");  
-        edgeBundle.buildEdgeBundle(0, 1);
+        edgeBundle.updateThreshold(min, max);
 
         var body_histogram_weekday = d3.select("#histogram_weekday");
         var xScale = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -131,11 +137,9 @@ h2 {
             d3.select("#sub_hour").html(this.objects);         
         });
         edgeBundle.dispatch = myDispatchFromEdgeBundle;
-
+        
 
 //BRUSH ----------------------------------------------------------------------------
-        var min = 0,
-        max = 0;
         var data = d3.range(800).map(Math.random);
         var svg = d3.select(".controller"),
             width = +svg.attr("width") - 40,
@@ -153,7 +157,7 @@ h2 {
         var gBrush = g.append("g")
             .attr("class", "brush")
             .call(brush);
-        gBrush.call(brush.move, [0, 100].map(x));
+        gBrush.call(brush.move, [min, max].map(x));
         function brushmoved() {
             var s = d3.event.selection;
             console.log( d3.event.selection.map(x.invert));
@@ -162,10 +166,16 @@ h2 {
             changeThreshold(min, max);
         }
 
+        pra_torar_na_emenda = true;
+        
         //controller aux functions
         function changeThreshold(min_threshold, max_threshold) {
-            fdl.updateThreshold(min_threshold, max_threshold);
-            edgeBundle.updateThreshold(min_threshold, max_threshold);
+            if(pra_torar_na_emenda) {
+              fdl.updateThreshold(min_threshold, max_threshold);
+              edgeBundle.updateThreshold(min_threshold, max_threshold);
+            } else {
+              // Nothing here, as you can see
+            }
         }
 
         //subtitle 
