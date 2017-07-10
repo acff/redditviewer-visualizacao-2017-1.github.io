@@ -131,14 +131,14 @@
             edgeBundle.maxThreshold(new_threshold);
         }
 
-        //subtitle APAGAR SPECIES DAQUI
+        //subtitle 
         function createSubtitle(svg) {
-            var species = ["entertainment", "gaming", "humor", "lifestyle", "learning", "news", "television"];
+            var subs = ["entertainment", "gaming", "humor", "lifestyle", "learning", "news", "television"];
             var color = d3.scaleOrdinal(d3.schemeCategory20);
 
-            for(var i=0; i<species.length; i++) {
+            for(var i=0; i<subs.length; i++) {
               svg.append('rect')
-                .attr("fill", color(species[i]))
+                .attr("fill", color(subs[i]))
                 .attr('x', i*100)
                 .attr('y', 0)
                 .attr("width", 20)
@@ -149,7 +149,7 @@
                 .attr("y", 15)
                 .style("font-size", "11px")               
                 .style("margin-right", "1%")
-                .text(species[i].charAt(0).toUpperCase() + species[i].slice(1));
+                .text(subs[i].charAt(0).toUpperCase() + subs[i].slice(1));
             }
         }
     </script>
