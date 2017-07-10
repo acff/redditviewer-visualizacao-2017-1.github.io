@@ -24,8 +24,8 @@ class EdgeBundle {
 			.radius(function(d) { return d.y; })
 			.angle(function(d) { return d.x / 180 * Math.PI; });
 			
-		this.svg = d3.select("body").append("svg")
-			.attr("width", this.diameter)
+		this.svg = container.append("svg")
+			.attr("width", this.diameter - 50)
 			.attr("height", this.diameter)
 			.append("g")
 			.attr("transform", "translate(" + this.radius + "," + this.radius + ")");

@@ -5,8 +5,8 @@ class ForceDirectedGraph {
 		this.jsonFile = jsonFile;
 		this.container = container.append("svg")
 			.attr("class", "FDL_SVG")
-			.attr("width", this.width)
-			.attr("height", this.height);
+			.attr("width", "100%")
+			.attr("height", "100%");
 
 		this.color = d3.scaleOrdinal(d3.schemeCategory20);
 		this.color_edges = d3.scaleLinear();
