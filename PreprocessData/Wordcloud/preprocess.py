@@ -4,7 +4,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-files = ['learning_askhistorians'];
+files = ['entertainment_music',
+'entertainment_starwars'];
 dataFinal = [];
 '''
 'entertainment_anime',
@@ -61,34 +62,31 @@ dataFinal = [];
 'television_thewalkingdead',
 '''
 
-with open('final_file.json', mode='w') as f:
-    json.dump([], f)
-
 for file_in in files:
-	print file_in + '...'
-	freq = {}
+   
+    print file_in + '...'
+    freq = {}
+    data = [];
+    csv_input =  open(file_in + '.csv', 'rb');
 
-	csv_input =  open(file_in + '.csv', 'rb');
+    reader = csv.reader(csv_input)
 
-	reader = csv.reader(csv_input)
+    for row in reader:
+      word_list = word_tokenize(row[1]);
+      filtered_words = [word for word in word_list if word not in stopwords.words('english')];
+      for word in filtered_words:
+        if(freq.has_key(word)):
+          freq[word] += 1
+        else:
+          freq[word] = 1
+    sorted_freq = sorted (freq.items(), key=operator.itemgetter(1))
 
-	for row in reader:
-		word_list = word_tokenize(row[1]);
-		filtered_words = [word for word in word_list if word not in stopwords.words('english')];
-		for word in filtered_words:
-			if(freq.has_key(word)):
-				freq[word] += 1
-			else:
-				freq[word] = 1
-	sorted_freq = sorted (freq.items(), key=operator.itemgetter(1))
+	
+    for word, frequency in sorted_freq[-30:]:
+      data.append({"text":str(word), "size":frequency});
 
-	data = [];
-	for word, frequency in sorted_freq[-30:]:
-		data.append({"text":str(word), "size":frequency});
-
-	with open('final_file.json', mode='w') as feedsjson:
-	    dataFinal.append(data)
-	    json.dump(dataFinal, feedsjson)
+    with open(file_in + '.json', mode='w') as feedsjson:
+      json.dump(data, feedsjson)
 
 
 
