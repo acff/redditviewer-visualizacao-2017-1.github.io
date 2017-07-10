@@ -39,7 +39,7 @@
 
 	var myDispatchFromEdgeBundle = d3.dispatch("selectionChanged");
 	myDispatchFromEdgeBundle.on("selectionChanged",function(){
-        console.log(this.objects);//histogram.refresh(this.objects);
+        //console.log(this.objects);//histogram.refresh(this.objects);
         hist.updateHistogram(this.objects);
         hist2.updateHistogram(this.objects);
     });

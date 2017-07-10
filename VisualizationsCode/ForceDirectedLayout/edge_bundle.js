@@ -30,6 +30,7 @@ class EdgeBundle {
 			.append("g")
 			.attr("transform", "translate(" + this.radius + "," + this.radius + ")");
 
+		this.graph = null;
 		//this.link = this.svg.append("g")
 		//	.attr("class", "linkGroup")
 		//	.selectAll(".link");
@@ -39,6 +40,25 @@ class EdgeBundle {
 	}
 
 	buildEdgeBundle(minThreshold, maxThreshold){
+		var that = this;
+
+		if(that.graph == null) {
+			d3.json(this.jsonFile, function(error, data) {
+				if (error) throw error;
+				that.graph = data;
+				that.BotaPraTorar(minThreshold, maxThreshold);
+			});
+
+		}
+		else {
+			that.BotaPraTorar(minThreshold, maxThreshold);
+		}
+
+			
+		//});		
+	}
+	
+	BotaPraTorar(minThreshold, maxThreshold){
 		// debugger
 		this.link = this.svg.append("g")
 			.attr("class", "linkGroup")
@@ -48,90 +68,84 @@ class EdgeBundle {
 			.selectAll(".node");
 		var that = this;
 		// debugger
-		d3.json(this.jsonFile, function(error, graph) {
-			if (error) throw error;
+		var toggle = 0;
 
-			var toggle = 0;
+		var linkedByIndex = {};
 
-			var linkedByIndex = {};
+		var min_link_value = Math.min.apply(Math,that.graph.links.map(function(d){return d.value;}));
+		var max_link_value = Math.max.apply(Math,that.graph.links.map(function(d){return d.value;}));
 
-			var min_link_value = Math.min.apply(Math,graph.links.map(function(d){return d.value;}));
-			var max_link_value = Math.max.apply(Math,graph.links.map(function(d){return d.value;}));
-
-			var thresholded_links = graph.links.filter(function (d) {
-				var normalized_value = (d.value - min_link_value) / max_link_value;
-				return normalized_value >= minThreshold && normalized_value <= maxThreshold;
-			});
-			
-			var classes = [];
-			
-			graph.nodes.forEach(function (node) {
-				var imports_value = [];
-				var connected_links = thresholded_links.filter(function (link) {return link.source == node.id});
-				connected_links.forEach(function (con_link) {
-					var con_link_group_name = graph.nodes.filter(function (d) {return d.id == con_link.target})[0].group;
-					imports_value.push(con_link_group_name+"."+con_link.target);
-				})
-			    classes.push({name: node.group+"."+node.id, size: 42, imports:imports_value, group: node.group});
-			});
-			
-			// Begins the joy
-			var root = that.packageHierarchy(classes)
-			.sum(function(d) { return d.size; });
-			that.cluster(root);
-
-			that.link = that.link
-			.data(that.packageImports(root.leaves()))
-			.enter().append("path")
-			  .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
-			  .attr("class", "link")
-			  .attr("d", that.line);
-
-			that.node = that.node
-			.data(root.leaves())
-			.enter().append("text")
-			  .attr("class", "node")
-			  .attr("fill", function(d) {
-					return that.color(d.data.group);
-				})
-			  .attr("dy", "0.31em")
-			  .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
-			  .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-			  .text(function(d) { return d.data.key; })
-			  .on("mouseover", function(d){
-				  that.node
-					  .each(function(n) { n.target = n.source = false; });
-
-					that.link
-					  .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
-					  .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
-					.filter(function(l) { return l.target === d || l.source === d; })
-					  .raise();
-
-					that.node
-					  .classed("node--target", function(n) { return n.target; })
-					  .classed("node--source", function(n) { return n.source; });
-					  dispatchFunc(that, d.data.key);
-			  })
-			  .on("mouseout", function(d){
-					that.link
-					  .classed("link--target", false)
-					  .classed("link--source", false);
-
-					that.node
-					  .classed("node--target", false)
-					  .classed("node--source", false);
-			  })
-			  ;
-			
-		});	
+		var thresholded_links = that.graph.links.filter(function (d) {
+			var normalized_value = (d.value - min_link_value) / max_link_value;
+			return normalized_value >= minThreshold && normalized_value <= maxThreshold;
+		});
 		
+		var classes = [];
+		
+		that.graph.nodes.forEach(function (node) {
+			var imports_value = [];
+			var connected_links = thresholded_links.filter(function (link) {return link.source == node.id});
+			connected_links.forEach(function (con_link) {
+				var con_link_group_name = that.graph.nodes.filter(function (d) {return d.id == con_link.target})[0].group;
+				imports_value.push(con_link_group_name+"."+con_link.target);
+			})
+		    classes.push({name: node.group+"."+node.id, size: 42, imports:imports_value, group: node.group});
+		});
+		
+		// Begins the joy
+		var root = that.packageHierarchy(classes)
+		.sum(function(d) { return d.size; });
+		that.cluster(root);
+
+		that.link = that.link
+		.data(that.packageImports(root.leaves()))
+		.enter().append("path")
+		  .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+		  .attr("class", "link")
+		  .attr("d", that.line);
+
+		that.node = that.node
+		.data(root.leaves())
+		.enter().append("text")
+		  .attr("class", "node")
+		  .attr("fill", function(d) {
+				return that.color(d.data.group);
+			})
+		  .attr("dy", "0.31em")
+		  .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+		  .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+		  .text(function(d) { return d.data.key; })
+		  .on("mouseover", function(d){
+			  that.node
+				  .each(function(n) { n.target = n.source = false; });
+
+				that.link
+				  .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
+				  .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+				.filter(function(l) { return l.target === d || l.source === d; })
+				  .raise();
+
+				that.node
+				  .classed("node--target", function(n) { return n.target; })
+				  .classed("node--source", function(n) { return n.source; });
+				  dispatchFunc(that, d.data.key);
+		  })
+		  .on("mouseout", function(d){
+				that.link
+				  .classed("link--target", false)
+				  .classed("link--source", false);
+
+				that.node
+				  .classed("node--target", false)
+				  .classed("node--source", false);
+		  })
+		  ;
+		  
 		function dispatchFunc(widge, subreddit){
 				widge.dispatch.call("selectionChanged", {objects:subreddit});
 			}
 	}
-	
-	
+
 	// mouseovered(d) {
 		// this.node
 		  // .each(function(n) { n.target = n.source = false; });
