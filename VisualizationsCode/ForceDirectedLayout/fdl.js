@@ -108,6 +108,14 @@ class ForceDirectedGraph {
 		    linkedByIndex[d.source + "," + d.target] = d.value;
 		});
 
+    var curr_bottom_edge_strength  = (max_link_value- min_link_value)*minThreshold;
+    var curr_highest_edge_strength = (max_link_value- min_link_value)*maxThreshold;
+    //console.log(curr_bottom_edge_strength);
+    //console.log(curr_highest_edge_strength);
+    
+    var min_intensity = 50;
+    var max_intensity = 255;
+    
 		//debugger;			
 		var link = that.container.append("g")
 		  .attr("class", "links")
@@ -116,8 +124,10 @@ class ForceDirectedGraph {
 		  .data(thresholded_links)
 		  .enter().append("line")
 		  .attr('stroke', function(d) {
-							var normalized_value = (d.value - min_link_value) / max_link_value; 
-							var color_intensity = 210 - normalized_value*255;
+							var normalized_value = (d.value -  curr_bottom_edge_strength)/(curr_highest_edge_strength-curr_bottom_edge_strength) ;
+              normalized_value = 1-normalized_value;
+              
+							var color_intensity = normalized_value*220;
 							return d3.rgb(color_intensity, color_intensity, color_intensity); 
 						  })
 		  .attr("stroke-width", function(d) {
