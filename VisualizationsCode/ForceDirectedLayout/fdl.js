@@ -87,7 +87,7 @@ class ForceDirectedGraph {
 		
 		var thresholded_nodes = [];
 
-		if(!(that.graph.links[0].source instanceof Object)) {
+		if(!(thresholded_links[0].source instanceof Object)) {
 			var links_sources = thresholded_links.map(function(d) {return d.source;});
 			var links_targets = thresholded_links.map(function(d) {return d.target;});
 			var list_nodes_with_links = links_sources.concat(links_targets);
@@ -102,7 +102,7 @@ class ForceDirectedGraph {
 				return list_nodes_with_links.indexOf(d.id) != -1;
 			});
 		}
-
+  // debugger
 		for (var i = 0; i < thresholded_nodes.length; i++) {
 			var id = thresholded_nodes[i].id;
 		    linkedByIndex[ id+ "," + id] = 1;
@@ -111,12 +111,25 @@ class ForceDirectedGraph {
 		    linkedByIndex[d.source + "," + d.target] = d.value;
 		});
 
+    // if(thresholded_nodes.length == 0){ 
+    // debugger
+    // }
+
+    that.simulation
+      // .nodes(thresholded_nodes)
+		  .nodes(that.graph.nodes)
+		   .on("tick", ticked);
+
+		that.simulation.force("link")
+		  .links(thresholded_links);
+      // .links(that.graph.links);
+    
     that.curr_bottom_edge_strength  = (max_link_value- min_link_value)*minThreshold;
     that.curr_highest_edge_strength = (max_link_value- min_link_value)*maxThreshold;
     //console.log(curr_bottom_edge_strength);
     //console.log(curr_highest_edge_strength);
     
-    var min_intensity = 50;
+    var min_intensity = 80;
     var max_intensity = 255;
     
 		//debugger;			
@@ -127,7 +140,7 @@ class ForceDirectedGraph {
 		  .data(thresholded_links)
 		  .enter().append("line")
 		  .attr('stroke', function(d) {
-							var normalized_value = (d.value -  that.curr_bottom_edge_strength)/(that.curr_highest_edge_strength - that.curr_bottom_edge_strength) ;
+							var normalized_value = (d.value -  that.curr_bottom_edge_strength)/(that.curr_highest_edge_strength - that.curr_bottom_edge_strength);
               normalized_value = 1-normalized_value;
               
 							var color_intensity = normalized_value*220;
@@ -221,14 +234,21 @@ class ForceDirectedGraph {
 
 			that.nodes = node;	
 		
-		that.simulation
-		  .nodes(that.graph.nodes)
-		  .on("tick", ticked);
+    
+    //var thresholded_nodes2 = JSON.parse(JSON.stringify(thresholded_nodes));
+    //var thresholded_links2 = JSON.parse(JSON.stringify(thresholded_links));
+    // debugger
+    
+		// that.simulation
+      // .nodes(thresholded_nodes)
+		  // // .nodes(that.graph.nodes)
+		  // .on("tick", ticked);
 
-		that.simulation.force("link")
-		  .links(that.graph.links);
+		// that.simulation.force("link")
+		  // .links(thresholded_links);
+      // // .links(that.graph.links);
 		  
-	    that.simulation
+	  that.simulation
 		  .alpha(0.5)
 		  .velocityDecay(0.5)
 		  .restart();
